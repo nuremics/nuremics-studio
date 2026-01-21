@@ -9,6 +9,7 @@ version = "0.1.0"
 [dependencies]
 python = "=3.12"
 marimo = "=0.19.2"
+rclone = ">=1.72.1,<2"
 
 [feature.DEMO_APP.pypi-dependencies]
 nuremics-labs = { path = "../nuremics-labs", editable = true, extras = ["DEMO_APP"] }

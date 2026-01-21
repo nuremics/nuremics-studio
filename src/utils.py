@@ -1,11 +1,12 @@
 import json
+from pathlib import Path
 from platformdirs import user_config_path
 
 CONFIG_PATH = user_config_path(
     appname="nuRemics",
     appauthor=False,
 )
-SETTINGS_FILE = CONFIG_PATH / "settings.json"
+SETTINGS_FILE: Path = CONFIG_PATH / "settings.json"
 
 
 def get_app_features(
@@ -36,3 +37,22 @@ def update_settings(
 ):
     with open(SETTINGS_FILE, "w") as f:
         json.dump(dict_settings, f, indent=4)
+
+
+def get_studies(
+    working_dir: Path,
+):
+    studies_file: Path = working_dir / "studies.json"
+    with open(studies_file) as f:
+        dict_studies = json.load(f)
+    
+    return dict_studies
+
+
+def update_studies(
+    working_dir: Path,
+    dict_studies: dict,
+):
+    studies_file: Path = working_dir / "studies.json"
+    with open(studies_file, "w") as f:
+        json.dump(dict_studies, f, indent=4)

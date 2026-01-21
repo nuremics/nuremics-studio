@@ -7,9 +7,10 @@ with app.setup(hide_code=True):
     import sys
     import io
     import importlib
+    import pandas as pd
     import marimo as mo
     import utils
-    # from pathlib import Path
+    from pathlib import Path
 
     app_name = sys.argv[1]
 
@@ -87,6 +88,16 @@ def _():
     return
 
 
+@app.cell(disabled=True)
+def _():
+    image2 = mo.image(
+        src="https://splinecloud.com/img/sc-logo.png",
+        width=None,
+    )
+    mo.vstack([mo.vstack([image2], align="center")])
+    return
+
+
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
@@ -102,20 +113,20 @@ def _():
     dict_settings = utils.get_settings()
 
     if dict_settings["apps"][app_name]["working_dir"] is not None:
-        working_dir = dict_settings["apps"][app_name]["working_dir"]
+        dir = dict_settings["apps"][app_name]["working_dir"]
     else:
         if dict_settings["default_working_dir"] is not None:
-            working_dir = dict_settings["default_working_dir"]
+            dir = dict_settings["default_working_dir"]
         else:
-            working_dir = ""
-    return dict_settings, working_dir
+            dir = ""
+    return dict_settings, dir
 
 
 @app.cell(hide_code=True)
-def _(working_dir):
+def _(dir):
     working_dir_wgt = mo.ui.text(
         label="Working directory:",
-        value=working_dir,
+        value=dir,
     )
     working_dir_wgt
     return (working_dir_wgt,)
@@ -127,6 +138,40 @@ def _(dict_settings, working_dir_wgt):
     utils.update_settings(
         dict_settings=dict_settings,
     )
+
+    working_dir: Path = Path(working_dir_wgt.value) / app_name
+
+    try:
+        main(stage="config")
+    except SystemExit:
+        pass
+    return (working_dir,)
+
+
+@app.cell
+def _(working_dir: Path):
+    dict_studies = utils.get_studies(
+        working_dir=working_dir,
+    )
+
+    if dict_studies["studies"]:
+        df = pd.DataFrame({"Studies": dict_studies["studies"]})
+    else:
+        df = pd.DataFrame({"Studies": pd.Series(dtype=str)})
+
+    editor = mo.ui.data_editor(df)
+    editor
+    return dict_studies, editor
+
+
+@app.cell(hide_code=True)
+def _(dict_studies, editor, working_dir: Path):
+    dict_studies["studies"] = editor.value["Studies"].astype(str).tolist()
+    utils.update_studies(
+        working_dir=working_dir,
+        dict_studies=dict_studies,
+    )
+
     try:
         main(stage="config")
     except SystemExit:
