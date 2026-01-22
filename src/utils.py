@@ -40,9 +40,9 @@ def update_settings(
 
 
 def get_studies(
-    working_dir: Path,
+    working_path: Path,
 ):
-    studies_file: Path = working_dir / "studies.json"
+    studies_file: Path = working_path / "studies.json"
     with open(studies_file) as f:
         dict_studies = json.load(f)
     
@@ -50,9 +50,9 @@ def get_studies(
 
 
 def update_studies(
-    working_dir: Path,
+    working_path: Path,
     dict_studies: dict,
 ):
-    studies_file: Path = working_dir / "studies.json"
+    studies_file: Path = working_path / "studies.json"
     with open(studies_file, "w") as f:
         json.dump(dict_studies, f, indent=4)
