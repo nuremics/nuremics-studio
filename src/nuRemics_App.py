@@ -5,12 +5,14 @@ app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
     import sys
-    import io
+    import copy
+    import attrs
     import importlib
     import pandas as pd
     import marimo as mo
-    import utils
     from pathlib import Path
+
+    import utils
 
     app_name = sys.argv[1]
 
@@ -109,7 +111,7 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    main(stage=None)
+    workflow = main(stage=None)
     dict_settings = utils.get_settings()
 
     if dict_settings["apps"][app_name]["working_dir"] is not None:
@@ -119,7 +121,7 @@ def _():
             dir = dict_settings["default_working_dir"]
         else:
             dir = ""
-    return dict_settings, dir
+    return dict_settings, dir, workflow
 
 
 @app.cell(hide_code=True)
@@ -130,6 +132,15 @@ def _(dir):
     )
     working_dir_wgt
     return (working_dir_wgt,)
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Studies
+    -----------------------------
+    """)
+    return
 
 
 @app.cell(hide_code=True)
@@ -148,7 +159,7 @@ def _(dict_settings, working_dir_wgt):
     return (working_dir,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(working_dir: Path):
     dict_studies = utils.get_studies(
         working_dir=working_dir,
@@ -167,6 +178,7 @@ def _(working_dir: Path):
 @app.cell(hide_code=True)
 def _(dict_studies, editor, working_dir: Path):
     dict_studies["studies"] = editor.value["Studies"].astype(str).tolist()
+
     utils.update_studies(
         working_dir=working_dir,
         dict_studies=dict_studies,
@@ -176,6 +188,134 @@ def _(dict_studies, editor, working_dir: Path):
         main(stage="config")
     except SystemExit:
         pass
+
+    dict_studies_to_config = utils.get_studies(
+        working_dir=working_dir,
+    )
+    return (dict_studies_to_config,)
+
+
+@app.cell(hide_code=True)
+def _(dict_studies_to_config):
+    get_state_config, set_state_config = mo.state(0)
+
+    # print(dict_studies_to_config["config"])
+
+    dict_config_wgt = {}
+    dict_config_tabs = {}
+    for key, value in dict_studies_to_config["config"].items():
+
+        list_wgt = []
+        dict_config_wgt[key] = {}
+
+        execute_wgt = mo.ui.checkbox(
+            label="execute",
+            value=value["execute"],
+            on_change=set_state_config,
+        )
+        list_wgt.append(mo.vstack([execute_wgt]))
+        dict_config_wgt[key]["execute"] = execute_wgt
+
+        list_wgt.append(mo.md("**INPUT PARAMETERS** _(check inputs that are variable within the study)_"))
+
+        dict_user_params_wgt = {}
+        for k, v in value["user_params"].items():
+            if v is None:
+                val = False
+            else:
+                val = v
+            w = mo.ui.checkbox(
+                label=k,
+                value=val,
+                on_change=set_state_config,
+            )
+            dict_user_params_wgt[k] = w
+            list_wgt.append(w)
+
+        dict_config_wgt[key]["user_params"] = dict_user_params_wgt
+
+        list_wgt.append(mo.md("**INPUT PATHS** _(check inputs that are variable within the study)_"))
+
+        dict_user_paths_wgt = {}
+        for k, v in value["user_paths"].items():
+            if v is None:
+                val = False
+            else:
+                val = v
+            w = mo.ui.checkbox(
+                label=k,
+                value=val,
+                on_change=set_state_config,
+            )
+            dict_user_paths_wgt[k] = w
+            list_wgt.append(w)
+
+        dict_config_wgt[key]["user_paths"] = dict_user_paths_wgt
+
+        tab = mo.vstack(list_wgt)
+        dict_config_tabs[key] = tab
+
+    tabs = mo.ui.tabs(
+        tabs=dict_config_tabs,
+        )
+    tabs
+    return dict_config_wgt, get_state_config
+
+
+@app.cell(hide_code=True)
+def _(
+    dict_config_wgt,
+    dict_studies_to_config,
+    get_state_config,
+    working_dir: Path,
+):
+    _ = get_state_config()
+
+    dict_studies_configured = copy.deepcopy(dict_studies_to_config)
+    for key2, value2 in dict_studies_to_config["config"].items():
+
+        dict_studies_configured["config"][key2]["execute"] = dict_config_wgt[key2]["execute"].value
+
+        for k2, _ in value2["user_params"].items():
+            dict_studies_configured["config"][key2]["user_params"][k2] = dict_config_wgt[key2]["user_params"][k2].value
+
+        for k2, _ in value2["user_paths"].items():
+            dict_studies_configured["config"][key2]["user_paths"][k2] = dict_config_wgt[key2]["user_paths"][k2].value
+
+    utils.update_studies(
+        working_dir=working_dir,
+        dict_studies=dict_studies_configured,
+    )
+
+    try:
+        main(stage="config")
+    except SystemExit:
+        pass
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### Settings
+    -----------------------------
+    """)
+    return
+
+
+@app.cell(disabled=True)
+def _(workflow):
+    for proc in workflow:
+        process = proc["process"]
+
+        for field in attrs.fields(process):
+            if field.metadata.get("input", False):
+                print(f"{field.name}, {field.type}")
+    return
+
+
+@app.cell
+def _():
     return
 
 
