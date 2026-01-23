@@ -160,7 +160,7 @@ def settings(
                     )
                     list_fixed_wgt.append(w)
 
-        list_fixed_wgt.append(mo.md("**INPUT PATHS** _(set paths or place files/folders in the requested location)_"))
+        list_fixed_wgt.append(mo.md("**INPUT PATHS** _(set paths or add files/folders to the requested location)_"))
 
         for k, v in dict_inputs.items():
             if (k in app.workflow.user_paths) and (not isinstance(v, dict)):
@@ -172,6 +172,11 @@ def settings(
                 w = mo.ui.text(
                     label=f"{k}:",
                     value=val,
+                )
+                w = mo.hstack(
+                    [w, mo.md(f"`{working_path / f'{study}/0_inputs'}`")],
+                    justify="start",
+                    align="center",
                 )
                 list_fixed_wgt.append(w)
 
