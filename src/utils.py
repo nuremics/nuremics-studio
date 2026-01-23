@@ -80,3 +80,14 @@ def update_list_studies(
     dict_studies["studies"] = list_studies
     with open(studies_file, "w") as f:
         json.dump(dict_studies, f, indent=4)
+
+
+def get_json_inputs(
+    working_path: Path,
+    study: str,
+):
+    inputs_file: Path = working_path / f"{study}/inputs.json"
+    with open(inputs_file) as f:
+        dict_inputs = json.load(f)
+    
+    return dict_inputs

@@ -1,5 +1,9 @@
 import marimo as mo
 import pandas as pd
+from pathlib import Path
+
+import utils
+from nuremics import Application
 
 
 def working_dir(
@@ -89,3 +93,96 @@ def config(
     )
 
     return widget, dict_widget
+
+
+def settings(
+    app: Application,
+    working_path: Path,
+    list_studies: list[str],
+):
+    dict_widget = {}
+    dict_tabs = {}
+    for study in list_studies:
+
+        list_fixed_wgt = []
+        list_variable_wgt = []
+        dict_widget[study] = {}
+
+        dict_tab = {
+            "Fixed": {},
+            "Variable": {},
+        }
+
+        dict_inputs = utils.get_json_inputs(
+            working_path=working_path,
+            study=study,
+        )
+
+        list_fixed_wgt.append(mo.md("**INPUT PARAMETERS** _(set values)_"))
+
+        for k2, v2 in dict_inputs.items():
+            if k2 in app.workflow.params_type:
+
+                if app.workflow.params_type[k2][1] == "float":
+                    w = mo.ui.number(
+                        label=f"{k2}:",
+                        value=v2,
+                    )
+                    list_fixed_wgt.append(w)
+
+                if app.workflow.params_type[k2][1] == "int":
+                    w = mo.ui.number(
+                        label=f"{k2}:",
+                        value=v2,
+                        step=1,
+                    )
+                    list_fixed_wgt.append(w)
+
+                if app.workflow.params_type[k2][1] == "bool":
+                    if v2 is None:
+                        val = False
+                    else:
+                        val = v2
+                    w = mo.ui.checkbox(
+                        label=k2,
+                        value=val,
+                    )
+                    list_fixed_wgt.append(w)
+
+                if app.workflow.params_type[k2][1] == "str":
+                    if v2 is None:
+                        val = ""
+                    else:
+                        val = v2
+                    w = mo.ui.text(
+                        label=f"{k2}:",
+                        value=val,
+                    )
+                    list_fixed_wgt.append(w)
+
+        list_fixed_wgt.append(mo.md("**INPUT PATHS** _(set paths)_"))
+
+        for k2, v2 in dict_inputs.items():
+            if (k2 in app.workflow.user_paths) and (not isinstance(v2, dict)):
+
+                if v2 is None:
+                    val = ""
+                else:
+                    val = v2
+                w = mo.ui.text(
+                    label=f"{k2}:",
+                    value=val,
+                )
+                list_fixed_wgt.append(w)
+
+        dict_tab["Fixed"] = mo.vstack(list_fixed_wgt)
+
+        dict_tabs[study] = mo.ui.tabs(
+            tabs=dict_tab,
+        )
+
+    widget = mo.ui.tabs(
+        tabs=dict_tabs,
+    )
+
+    return widget

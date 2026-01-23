@@ -113,7 +113,8 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    workflow = main(stage=None)
+    workflow, app = main(stage=None)
+
     dict_settings = utils.get_settings()
 
     if dict_settings["apps"][app_name]["working_dir"] is not None:
@@ -123,7 +124,7 @@ def _():
             working_dir = dict_settings["default_working_dir"]
         else:
             working_dir = ""
-    return dict_settings, workflow, working_dir
+    return app, dict_settings, workflow, working_dir
 
 
 @app.cell(hide_code=True)
@@ -253,7 +254,6 @@ def _(
         working_path=working_path,
         dict_studies=dict_studies_configured,
     )
-    # set_dict_studies(dict_studies_configured)
 
     try:
         main(stage="config")
@@ -262,7 +262,7 @@ def _(
     return
 
 
-@app.cell(disabled=True, hide_code=True)
+@app.cell(hide_code=True)
 def _(is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
@@ -273,26 +273,24 @@ def _(is_valid_list_studies):
     return
 
 
-@app.cell(disabled=True)
-def _(is_valid_list_studies, list_studies):
+@app.cell
+def _(
+    app,
+    get_state_config,
+    is_valid_list_studies,
+    list_studies,
+    working_path,
+):
     mo.stop(not is_valid_list_studies)
 
-    dict_tabs = {}
-    for study in list_studies:
+    _ = get_state_config()
 
-        dict_tab = {
-            "Fixed": "test2",
-            "Variable": "test3",
-        }
-
-        dict_tabs[study] = mo.ui.tabs(
-            tabs=dict_tab,
-        )
-
-    tabs = mo.ui.tabs(
-        tabs=dict_tabs,
+    settings_wgt = wgt.settings(
+        app=app,
+        working_path=working_path,
+        list_studies=list_studies,
     )
-    tabs
+    settings_wgt
     return
 
 
