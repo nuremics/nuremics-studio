@@ -120,57 +120,57 @@ def settings(
 
         list_fixed_wgt.append(mo.md("**INPUT PARAMETERS** _(set values)_"))
 
-        for k2, v2 in dict_inputs.items():
-            if k2 in app.workflow.params_type:
+        for k, v in dict_inputs.items():
+            if k in app.workflow.params_type:
 
-                if app.workflow.params_type[k2][1] == "float":
+                if app.workflow.params_type[k][1] == "float":
                     w = mo.ui.number(
-                        label=f"{k2}:",
-                        value=v2,
+                        label=f"{k}:",
+                        value=v,
                     )
                     list_fixed_wgt.append(w)
 
-                if app.workflow.params_type[k2][1] == "int":
+                if app.workflow.params_type[k][1] == "int":
                     w = mo.ui.number(
-                        label=f"{k2}:",
-                        value=v2,
+                        label=f"{k}:",
+                        value=v,
                         step=1,
                     )
                     list_fixed_wgt.append(w)
 
-                if app.workflow.params_type[k2][1] == "bool":
-                    if v2 is None:
+                if app.workflow.params_type[k][1] == "bool":
+                    if v is None:
                         val = False
                     else:
-                        val = v2
+                        val = v
                     w = mo.ui.checkbox(
-                        label=k2,
+                        label=k,
                         value=val,
                     )
                     list_fixed_wgt.append(w)
 
-                if app.workflow.params_type[k2][1] == "str":
-                    if v2 is None:
+                if app.workflow.params_type[k][1] == "str":
+                    if v is None:
                         val = ""
                     else:
-                        val = v2
+                        val = v
                     w = mo.ui.text(
-                        label=f"{k2}:",
+                        label=f"{k}:",
                         value=val,
                     )
                     list_fixed_wgt.append(w)
 
-        list_fixed_wgt.append(mo.md("**INPUT PATHS** _(set paths)_"))
+        list_fixed_wgt.append(mo.md("**INPUT PATHS** _(set paths or place files/folders in the requested location)_"))
 
-        for k2, v2 in dict_inputs.items():
-            if (k2 in app.workflow.user_paths) and (not isinstance(v2, dict)):
+        for k, v in dict_inputs.items():
+            if (k in app.workflow.user_paths) and (not isinstance(v, dict)):
 
-                if v2 is None:
+                if v is None:
                     val = ""
                 else:
-                    val = v2
+                    val = v
                 w = mo.ui.text(
-                    label=f"{k2}:",
+                    label=f"{k}:",
                     value=val,
                 )
                 list_fixed_wgt.append(w)
