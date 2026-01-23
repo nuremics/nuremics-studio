@@ -22,6 +22,8 @@ with app.setup(hide_code=True):
     app_import = app_features["import"]
     app_link = app_features["link"]
     app_visual = app_features["visual"]
+    app_logo = app_features["logo"]
+    app_color = app_features["color"]
 
     module_path = f"nuremics_labs.apps.{app_import}"
     module = importlib.import_module(module_path)
@@ -49,7 +51,7 @@ def _():
         font-size: 30px;
         font-weight: 600;
 
-        background-color: #6eb6ffae;
+        background-color: {app_color};
         padding: 14px 20px;
         border-radius: 10px;
 
@@ -60,7 +62,7 @@ def _():
 
     .jost-banner:hover {{
         transform: scale(1.005);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.25); /* ombre un peu plus marquée */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
     }}
 
     .jost-banner img {{
@@ -70,7 +72,7 @@ def _():
 
     <a href="{app_link}" target="_blank" class="jost-banner-link">
         <div class="jost-banner">
-            <img src="https://raw.githubusercontent.com/nuremics/nuremics-docs/main/docs/images/logo.png">
+            <img src="{app_logo}">
             <div>
                 <strong> {app_name} </strong>
             </div>
@@ -134,7 +136,15 @@ def _(working_dir):
 
 
 @app.cell(hide_code=True)
-def _():
+def _(working_dir_wgt):
+    is_valid_working_dir = working_dir_wgt.value != ""
+    return (is_valid_working_dir,)
+
+
+@app.cell(hide_code=True)
+def _(is_valid_working_dir):
+    mo.stop(not is_valid_working_dir)
+
     mo.md(r"""
     ### Studies
     -----------------------------
@@ -143,7 +153,9 @@ def _():
 
 
 @app.cell(hide_code=True)
-def _(dict_settings, working_dir_wgt):
+def _(dict_settings, is_valid_working_dir, working_dir_wgt):
+    mo.stop(not is_valid_working_dir)
+
     dict_settings["apps"][app_name]["working_dir"] = working_dir_wgt.value
 
     utils.update_settings(
@@ -169,17 +181,25 @@ def _(working_path):
         list_studies=dict_studies_init["studies"],
     )
     studies_wgt
-    return dict_studies_init, studies_wgt
+    return (studies_wgt,)
 
 
 @app.cell(hide_code=True)
-def _(dict_studies_init, studies_wgt, working_path):
-    list_studies = studies_wgt.value["Studies"].astype(str).tolist()
-    dict_studies_init["studies"] = list_studies
+def _(studies_wgt):
+    list_studies = [
+        s for s in studies_wgt.value["Studies"].tolist() if s != ""
+    ]
+    is_valid_list_studies = bool(list_studies)
+    return is_valid_list_studies, list_studies
 
-    utils.update_studies(
+
+@app.cell(hide_code=True)
+def _(is_valid_list_studies, list_studies, working_path):
+    mo.stop(not is_valid_list_studies)
+
+    utils.update_list_studies(
         working_path=working_path,
-        dict_studies=dict_studies_init,
+        list_studies=list_studies,
     )
 
     try:
@@ -194,7 +214,9 @@ def _(dict_studies_init, studies_wgt, working_path):
 
 
 @app.cell(hide_code=True)
-def _(dict_studies_to_config):
+def _(dict_studies_to_config, is_valid_list_studies):
+    mo.stop(not is_valid_list_studies)
+
     get_state_config, set_state_config = mo.state(0)
 
     config_wgt, dict_config_wgt = wgt.config(
@@ -206,7 +228,15 @@ def _(dict_studies_to_config):
 
 
 @app.cell(hide_code=True)
-def _(dict_config_wgt, dict_studies_to_config, get_state_config, working_path):
+def _(
+    dict_config_wgt,
+    dict_studies_to_config,
+    get_state_config,
+    is_valid_list_studies,
+    working_path,
+):
+    mo.stop(not is_valid_list_studies)
+
     _ = get_state_config()
 
     dict_studies_configured = copy.deepcopy(dict_studies_to_config)
@@ -223,6 +253,7 @@ def _(dict_config_wgt, dict_studies_to_config, get_state_config, working_path):
         working_path=working_path,
         dict_studies=dict_studies_configured,
     )
+    # set_dict_studies(dict_studies_configured)
 
     try:
         main(stage="config")
@@ -231,8 +262,10 @@ def _(dict_config_wgt, dict_studies_to_config, get_state_config, working_path):
     return
 
 
-@app.cell(hide_code=True)
-def _():
+@app.cell(disabled=True, hide_code=True)
+def _(is_valid_list_studies):
+    mo.stop(not is_valid_list_studies)
+
     mo.md(r"""
     ### Settings
     -----------------------------
@@ -240,17 +273,26 @@ def _():
     return
 
 
-@app.cell
-def _():
+@app.cell(disabled=True)
+def _(is_valid_list_studies, list_studies):
+    mo.stop(not is_valid_list_studies)
 
-    # for i in list_studies:
+    dict_tabs = {}
+    for study in list_studies:
 
-    # tabs = mo.ui.tabs(
-    #     tabs={
+        dict_tab = {
+            "Fixed": "test2",
+            "Variable": "test3",
+        }
 
-    #         },
-    #     )
-    # tabs
+        dict_tabs[study] = mo.ui.tabs(
+            tabs=dict_tab,
+        )
+
+    tabs = mo.ui.tabs(
+        tabs=dict_tabs,
+    )
+    tabs
     return
 
 
