@@ -1,7 +1,10 @@
 import json
 import base64
+import pandas as pd
 from pathlib import Path
 from platformdirs import user_config_path
+
+from nuremics import Application
 
 CONFIG_PATH = user_config_path(
     appname="nuRemics",
@@ -91,3 +94,35 @@ def get_json_inputs(
         dict_inputs = json.load(f)
     
     return dict_inputs
+
+
+def get_csv_inputs(
+    app: Application,
+    working_path: Path,
+    study: str,
+):
+    inputs_file: Path = working_path / f"{study}/inputs.csv"
+    
+    if inputs_file.exists():
+        df_inputs_col = pd.read_csv(inputs_file, nrows=0)
+        
+        dtypes = {
+            "ID": "string",
+            "EXECUTE": "int64",
+        }
+        for col in df_inputs_col.columns[1:-1]:
+            if app.workflow.params_type[col][1] == "int":
+                dtypes[col] = "int64"
+            if app.workflow.params_type[col][1] == "float":
+                dtypes[col] = "float64"
+            if app.workflow.params_type[col][1] == "bool":
+                dtypes[col] = "bool"
+            if app.workflow.params_type[col][1] == "str":
+                dtypes[col] = "string"
+        
+        df_inputs = pd.read_csv(inputs_file, dtype=dtypes)
+    
+    else:
+        df_inputs = None
+
+    return df_inputs
