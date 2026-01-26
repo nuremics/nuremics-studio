@@ -1,4 +1,5 @@
 import json
+import copy
 import base64
 import pandas as pd
 from pathlib import Path
@@ -72,6 +73,23 @@ def update_studies(
         json.dump(dict_studies, f, indent=4)
 
 
+def update_dict_studies(
+    dict_studies: dict,
+    dict_config_wgt: dict,
+):
+    dict_studies_configured = copy.deepcopy(dict_studies)
+    for key, value in dict_studies["config"].items():
+
+        dict_studies_configured["config"][key]["execute"] = dict_config_wgt[key]["execute"].value
+        
+        for k, _ in value["user_params"].items():
+            dict_studies_configured["config"][key]["user_params"][k] = dict_config_wgt[key]["user_params"][k].value
+        for k, _ in value["user_paths"].items():
+            dict_studies_configured["config"][key]["user_paths"][k] = dict_config_wgt[key]["user_paths"][k].value
+
+    return dict_studies_configured
+
+
 def update_list_studies(
     working_path: Path,
     list_studies: list,
@@ -85,18 +103,31 @@ def update_list_studies(
         json.dump(dict_studies, f, indent=4)
 
 
-def get_json_inputs(
+def get_inputs_json(
     working_path: Path,
     study: str,
 ):
     inputs_file: Path = working_path / f"{study}/inputs.json"
-    with open(inputs_file) as f:
-        dict_inputs = json.load(f)
+    if inputs_file.exists():
+        with open(inputs_file) as f:
+            dict_inputs = json.load(f)
+    else:
+        dict_inputs = None
     
     return dict_inputs
 
 
-def get_csv_inputs(
+def update_inputs_json(
+    dict_inputs: dict,
+    working_path: Path,
+    study: str,
+):
+    inputs_file: Path = working_path / f"{study}/inputs.json"
+    with open(inputs_file, "w") as f:
+        json.dump(dict_inputs, f, indent=4)
+
+
+def get_inputs_csv(
     app: Application,
     working_path: Path,
     study: str,
@@ -108,15 +139,15 @@ def get_csv_inputs(
         
         dtypes = {
             "ID": "string",
-            "EXECUTE": "int64",
+            "EXECUTE": "Int64",
         }
         for col in df_inputs_col.columns[1:-1]:
             if app.workflow.params_type[col][1] == "int":
-                dtypes[col] = "int64"
+                dtypes[col] = "Int64"
             if app.workflow.params_type[col][1] == "float":
                 dtypes[col] = "float64"
             if app.workflow.params_type[col][1] == "bool":
-                dtypes[col] = "bool"
+                dtypes[col] = "boolean"
             if app.workflow.params_type[col][1] == "str":
                 dtypes[col] = "string"
         
@@ -126,3 +157,71 @@ def get_csv_inputs(
         df_inputs = None
 
     return df_inputs
+
+
+def update_inputs_csv(
+    df_inputs: pd.DataFrame,
+    working_path: Path,
+    study: str,    
+):
+    inputs_file: Path = working_path / f"{study}/inputs.csv"
+    df_inputs.to_csv(
+        path_or_buf=inputs_file,
+        index=False,
+    )
+
+
+def update_studies_settings(
+    app: Application,
+    dict_settings_wgt: dict,
+    working_path: Path,
+):
+    for key, value in dict_settings_wgt.items():
+        
+        # ------------ #
+        # Fixed inputs #
+        # ------------ #
+        dict_inputs = get_inputs_json(
+            working_path=working_path,
+            study=key,
+        )
+
+        # Fixed params
+        for k, v in value["Fixed"]["params"].items():
+            if (app.workflow.params_type[k][1] == "float") and (v.value is not None):
+                dict_inputs[k] = float(v.value)
+            else:
+                dict_inputs[k] = v.value
+
+        # Fixed paths
+        for k, v in value["Fixed"]["paths"].items():
+            if v.value.strip() != "":
+                dict_inputs[k] = v.value
+            else:
+                dict_inputs[k] = None
+        
+        update_inputs_json(
+            dict_inputs=dict_inputs,
+            working_path=working_path,
+            study=key,
+        )
+        
+        # --------------- #
+        # Variable inputs #
+        # --------------- #
+        df_inputs = get_inputs_csv(
+            app=app,
+            working_path=working_path,
+            study=key,
+        )
+
+        # Inputs dataframe
+        if df_inputs is not None:
+
+            df_inputs = value["Variable"]["df_inputs"].value
+
+            update_inputs_csv(
+                df_inputs=df_inputs,
+                working_path=working_path,
+                study=key,
+            )

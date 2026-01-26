@@ -1,11 +1,10 @@
 import marimo
 
-__generated_with = "0.19.2"
+__generated_with = "0.19.6"
 app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
     import sys
-    import copy
     import attrs
     import importlib
     import marimo as mo
@@ -124,7 +123,7 @@ def _():
             working_dir = dict_settings["default_working_dir"]
         else:
             working_dir = ""
-    return app, dict_settings, workflow, working_dir
+    return app, dict_settings, working_dir
 
 
 @app.cell(hide_code=True)
@@ -240,15 +239,10 @@ def _(
 
     _ = get_state_config()
 
-    dict_studies_configured = copy.deepcopy(dict_studies_to_config)
-    for key, value in dict_studies_to_config["config"].items():
-
-        dict_studies_configured["config"][key]["execute"] = dict_config_wgt[key]["execute"].value
-
-        for k, _ in value["user_params"].items():
-            dict_studies_configured["config"][key]["user_params"][k] = dict_config_wgt[key]["user_params"][k].value
-        for k, _ in value["user_paths"].items():
-            dict_studies_configured["config"][key]["user_paths"][k] = dict_config_wgt[key]["user_paths"][k].value
+    dict_studies_configured = utils.update_dict_studies(
+        dict_studies=dict_studies_to_config,
+        dict_config_wgt=dict_config_wgt,
+    )
 
     utils.update_studies(
         working_path=working_path,
@@ -256,10 +250,10 @@ def _(
     )
 
     try:
-        main(stage="config")
+        _, app_configured = main(stage="config")
     except SystemExit:
         pass
-    return
+    return (app_configured,)
 
 
 @app.cell(hide_code=True)
@@ -275,7 +269,7 @@ def _(is_valid_list_studies):
 
 @app.cell
 def _(
-    app,
+    app_configured,
     get_state_config,
     is_valid_list_studies,
     list_studies,
@@ -285,28 +279,50 @@ def _(
 
     _ = get_state_config()
 
-    settings_wgt = wgt.settings(
-        app=app,
+    get_state_settings, set_state_settings = mo.state(0)
+
+    settings_wgt, dict_settings_wgt = wgt.settings(
+        app=app_configured,
         working_path=working_path,
         list_studies=list_studies,
+        set_state=set_state_settings,
     )
     settings_wgt
-    return
+    return dict_settings_wgt, get_state_settings
 
 
-@app.cell(disabled=True)
-def _(workflow):
-    for proc in workflow:
-        process = proc["process"]
+@app.cell
+def _(
+    app,
+    dict_settings_wgt,
+    get_state_settings,
+    is_valid_list_studies,
+    working_path,
+):
+    mo.stop(not is_valid_list_studies)
 
-        for field in attrs.fields(process):
-            if field.metadata.get("input", False):
-                print(f"{field.name}, {field.type}")
+    # print(dict_settings_wgt)
+
+    _ = get_state_settings()
+
+    utils.update_studies_settings(
+        app=app,
+        dict_settings_wgt=dict_settings_wgt,
+        working_path=working_path,
+    )
     return
 
 
 @app.cell
-def _():
+def _(get_state_settings, is_valid_list_studies):
+    mo.stop(not is_valid_list_studies)
+
+    _ = get_state_settings()
+
+    try:
+        main(stage="settings")
+    except SystemExit:
+        pass
     return
 
 
