@@ -229,34 +229,46 @@ def update_studies_settings(
             else:
                 dict_inputs[k] = None
         
+        # --------------- #
+        # Variable inputs #
+        # --------------- #
+        df_inputs = get_inputs_csv(
+            app=app,
+            working_path=working_path,
+            study=key,
+        )
+        if df_inputs is not None:
+            for dataset in df_inputs["ID"]:
+
+                # Variable params
+                for k, v in value["Variable"][dataset]["params"].items():
+                    if v.value is not None:
+                        if (app.workflow.params_type[k][1] == "float"):
+                            df_inputs.loc[df_inputs["ID"] == dataset, k] = float(v.value)
+                        elif (app.workflow.params_type[k][1] == "int"):
+                            df_inputs.loc[df_inputs["ID"] == dataset, k] = int(v.value)
+                        elif (app.workflow.params_type[k][1] == "bool"):
+                            df_inputs.loc[df_inputs["ID"] == dataset, k] = bool(v.value)
+                        elif (app.workflow.params_type[k][1] == "str"):
+                            df_inputs.loc[df_inputs["ID"] == dataset, k] = str(v.value)
+                    else:
+                        df_inputs.loc[df_inputs["ID"] == dataset, k] = v.value
+                
+                # Variable paths
+                for k, v in value["Variable"][dataset]["paths"].items():
+                    if v.value.strip() != "":
+                        dict_inputs[k][dataset] = v.value
+                    else:
+                        dict_inputs[k][dataset] = None
+
+            update_inputs_csv(
+                df_inputs=df_inputs,
+                working_path=working_path,
+                study=key,
+            )
+
         update_inputs_json(
             dict_inputs=dict_inputs,
             working_path=working_path,
             study=key,
         )
-        
-        # --------------- #
-        # Variable inputs #
-        # --------------- #
-        # df_inputs = get_inputs_csv(
-        #     app=app,
-        #     working_path=working_path,
-        #     study=key,
-        # )
-
-        # print(key)
-        # print(df_inputs)
-
-        # # Inputs dataframe
-        # if df_inputs is not None:
-
-
-
-
-        # df_inputs = value["Variable"]["df_inputs"].value
-
-        # update_inputs_csv(
-        #     df_inputs=df_inputs,
-        #     working_path=working_path,
-        #     study=key,
-        # )

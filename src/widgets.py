@@ -124,6 +124,7 @@ def datasets(
 
     return widget, dict_widget
 
+
 def settings(
     app: Application,
     working_path: Path,
@@ -245,13 +246,16 @@ def settings(
             working_path=working_path,
             study=study,
         )
-
         if df_inputs is not None:
 
             dict_tab["Variable"] = {}
             dict_accordion_datasets = {}
 
             for dataset in df_inputs["ID"]:
+
+                dict_widget[study]["Variable"][dataset] = {}
+                dict_widget[study]["Variable"][dataset]["params"] = {}
+                dict_widget[study]["Variable"][dataset]["paths"] = {}
 
                 list_variable_params_wgt = []
                 list_variable_paths_wgt = []
@@ -307,7 +311,7 @@ def settings(
                             on_change=set_state,
                         )
                     
-                    # dict_widget[study]["Fixed"]["params"][param] = w
+                    dict_widget[study]["Variable"][dataset]["params"][param] = w
                     list_variable_params_wgt.append(w)
 
                 # Variable paths
@@ -326,7 +330,7 @@ def settings(
                         value=val,
                         on_change=set_state,
                     )
-                    # dict_widget[study]["Fixed"]["paths"][path] = w
+                    dict_widget[study]["Variable"][dataset]["paths"][path] = w
                     w = mo.hstack(
                         [w, mo.md(f"`{working_path / f'{study}/0_inputs/0_datasets/{dataset}'}`")],
                         justify="start",
@@ -343,26 +347,6 @@ def settings(
                     list_variable_wgt.append(mo.vstack(list_variable_paths_wgt))
 
                 dict_accordion_datasets[dataset] = mo.vstack(list_variable_wgt)
-            
-            # w = mo.ui.data_editor(
-            #     data=df_inputs,
-            #     on_change=set_state,
-            # )
-            # dict_widget[study]["Variable"]["df_inputs"] = w
-            # list_variable_params_wgt.append(w)
-
-            # # Variable paths
-            # list_variable_paths_wgt.append(mo.md("**INPUT PATHS** _(set paths or add files/folders to the requested location)_"))
-
-            # dict_tab_datasets = {}
-            # for id in df_inputs["ID"].tolist():
-            #     dict_tab_datasets[id] = "Test"
-            
-            # list_variable_paths_wgt.append(
-            #     mo.ui.tabs(
-            #         tabs=dict_tab_datasets,
-            #     )
-            # )
 
             dict_tab["Variable"] = mo.vstack([
                     mo.accordion(
@@ -370,9 +354,6 @@ def settings(
                     ),
                 ],
             )
-        
-        else:
-            dict_widget[study]["Variable"]["df_inputs"] = None
 
         dict_tabs[study] = mo.ui.tabs(
             tabs=dict_tab,

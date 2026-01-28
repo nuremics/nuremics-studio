@@ -360,8 +360,6 @@ def _(
 ):
     mo.stop(not is_valid_list_studies)
 
-    # print(dict_settings_wgt)
-
     _ = get_state_settings()
 
     utils.update_studies_settings(
@@ -369,35 +367,6 @@ def _(
         dict_settings_wgt=dict_settings_wgt,
         working_path=working_path,
     )
-    return
-
-
-@app.cell(disabled=True)
-def _(pd):
-    #import pandas as pd
-
-    df = pd.DataFrame({"A": [1, 2, 3], "B": ["a", "b", "c"]})
-
-    editor = mo.ui.data_editor(data=df, label="Edit Data")
-
-    dict_tabs = {
-        "tab1": editor,
-        "tab2": "test"
-    }
-
-    tabs = mo.ui.tabs(
-        tabs=dict_tabs,
-    )
-
-    tabs
-
-    # acc = mo.accordion(
-    #     {
-    #         "Door 1": editor,
-    #         "Door 2": mo.md("Nothing!"),
-    #     }
-    # )
-    # acc
     return
 
 
