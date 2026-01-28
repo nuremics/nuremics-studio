@@ -267,7 +267,7 @@ def _(is_valid_list_studies):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     app_configured,
     get_state_config,
@@ -278,6 +278,65 @@ def _(
     mo.stop(not is_valid_list_studies)
 
     _ = get_state_config()
+
+    get_state_datasets, set_state_datasets = mo.state(0)
+
+    datasets_wgt, dict_datasets_wgt = wgt.datasets(
+        app=app_configured,
+        working_path=working_path,
+        list_studies=list_studies,
+        set_state=set_state_datasets,
+    )
+    datasets_wgt
+    return dict_datasets_wgt, get_state_datasets
+
+
+@app.cell(hide_code=True)
+def _(
+    app,
+    dict_datasets_wgt,
+    get_state_datasets,
+    is_valid_list_studies,
+    working_path,
+):
+    mo.stop(not is_valid_list_studies)
+
+    _ = get_state_datasets()
+
+    utils.update_datasets(
+        app=app,
+        dict_datasets_wgt=dict_datasets_wgt,
+        working_path=working_path,
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(get_state_datasets, is_valid_list_studies):
+    mo.stop(not is_valid_list_studies)
+
+    _ = get_state_datasets()
+
+    try:
+        main(stage="settings")
+    except SystemExit:
+        pass
+    return
+
+
+@app.cell
+def _(
+    app_configured,
+    get_state_config,
+    get_state_datasets,
+    is_valid_list_studies,
+    list_studies,
+    working_path,
+):
+    mo.stop(not is_valid_list_studies)
+
+    _ = get_state_config()
+    _ = get_state_datasets()
 
     get_state_settings, set_state_settings = mo.state(0)
 
@@ -313,11 +372,41 @@ def _(
     return
 
 
+@app.cell(disabled=True)
+def _(pd):
+    #import pandas as pd
+
+    df = pd.DataFrame({"A": [1, 2, 3], "B": ["a", "b", "c"]})
+
+    editor = mo.ui.data_editor(data=df, label="Edit Data")
+
+    dict_tabs = {
+        "tab1": editor,
+        "tab2": "test"
+    }
+
+    tabs = mo.ui.tabs(
+        tabs=dict_tabs,
+    )
+
+    tabs
+
+    # acc = mo.accordion(
+    #     {
+    #         "Door 1": editor,
+    #         "Door 2": mo.md("Nothing!"),
+    #     }
+    # )
+    # acc
+    return
+
+
 @app.cell
-def _(get_state_settings, is_valid_list_studies):
+def _(get_state_datasets, get_state_settings, is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
     _ = get_state_settings()
+    _ = get_state_datasets()
 
     try:
         main(stage="settings")

@@ -171,6 +171,35 @@ def update_inputs_csv(
     )
 
 
+def update_datasets(
+    app: Application,
+    dict_datasets_wgt: dict,
+    working_path: Path,
+):
+    datasets = dict_datasets_wgt["datasets"]
+    if datasets is not None:
+        for col in datasets.value.columns:
+            
+            df_inputs = get_inputs_csv(
+                app=app,
+                working_path=working_path,
+                study=col,
+            )
+            
+            list_datasets = [x for x in datasets.value[col].to_list() if x]
+            for dataset in list_datasets:
+                if dataset not in df_inputs["ID"].values:
+                    df_inputs.loc[len(df_inputs), "ID"] = dataset
+
+            df_inputs = df_inputs[df_inputs["ID"].isin(list_datasets)]
+
+            update_inputs_csv(
+                df_inputs=df_inputs,
+                working_path=working_path,
+                study=col,
+            )
+
+
 def update_studies_settings(
     app: Application,
     dict_settings_wgt: dict,
@@ -209,19 +238,25 @@ def update_studies_settings(
         # --------------- #
         # Variable inputs #
         # --------------- #
-        df_inputs = get_inputs_csv(
-            app=app,
-            working_path=working_path,
-            study=key,
-        )
+        # df_inputs = get_inputs_csv(
+        #     app=app,
+        #     working_path=working_path,
+        #     study=key,
+        # )
 
-        # Inputs dataframe
-        if df_inputs is not None:
+        # print(key)
+        # print(df_inputs)
 
-            df_inputs = value["Variable"]["df_inputs"].value
+        # # Inputs dataframe
+        # if df_inputs is not None:
 
-            update_inputs_csv(
-                df_inputs=df_inputs,
-                working_path=working_path,
-                study=key,
-            )
+
+
+
+        # df_inputs = value["Variable"]["df_inputs"].value
+
+        # update_inputs_csv(
+        #     df_inputs=df_inputs,
+        #     working_path=working_path,
+        #     study=key,
+        # )
