@@ -104,7 +104,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ## Configuration
+    ## 🧪 Configuration
     -----------------------------
     """)
     return
@@ -146,7 +146,7 @@ def _(is_valid_working_dir):
     mo.stop(not is_valid_working_dir)
 
     mo.md(r"""
-    ### Studies
+    ### 📚 Studies
     -----------------------------
     """)
     return
@@ -261,7 +261,7 @@ def _(is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
     mo.md(r"""
-    ### Settings
+    ### ⚙️ Settings
     -----------------------------
     """)
     return
@@ -324,7 +324,7 @@ def _(get_state_datasets, is_valid_list_studies):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     app_configured,
     get_state_config,
@@ -350,7 +350,7 @@ def _(
     return dict_settings_wgt, get_state_settings
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     app,
     dict_settings_wgt,
@@ -370,17 +370,87 @@ def _(
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(get_state_datasets, get_state_settings, is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
     _ = get_state_settings()
     _ = get_state_datasets()
 
+    kind = None
+
     try:
         main(stage="settings")
+        kind = "success"
     except SystemExit:
-        pass
+        kind = "danger"
+    return (kind,)
+
+
+@app.cell(hide_code=True)
+def _(is_valid_list_studies, kind):
+    mo.stop(not is_valid_list_studies)
+
+    button = mo.ui.run_button(
+        kind=kind,
+        label="Run App",
+        full_width=False,
+    )
+    mo.vstack(
+        [
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([button]),
+        ], align="center",
+    )
+    return (button,)
+
+
+@app.cell(hide_code=True)
+def _(button):
+    mo.stop(not button.value)
+
+    success = None
+
+    try:
+        main(stage="run")
+        message = mo.vstack(
+            [mo.md("<span style='color: green; font-size: 3.5em;'>✔</span>")],
+            align="center",
+        )
+        success = True
+    except SystemExit:
+        message = mo.vstack(
+            [mo.md("<span style='color: red; font-size: 3.5em;'>✘</span>")],
+            align="center",
+        )
+        success = False
+    return message, success
+
+
+@app.cell
+def _(message):
+    message
+    return
+
+
+@app.cell
+def _(success):
+    mo.stop(not success)
+
+    mo.md(r"""
+    ## 📊 Results
+    -----------------------------
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(success, working_path):
+    mo.stop(not success)
+
+    mo.vstack([mo.ui.file_browser(initial_path=working_path)])
     return
 
 

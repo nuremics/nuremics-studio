@@ -103,28 +103,30 @@ def update_list_studies(
         json.dump(dict_studies, f, indent=4)
 
 
-def get_inputs_json(
+def get_json_file(
     working_path: Path,
     study: str,
+    file_prefix: str,
 ):
-    inputs_file: Path = working_path / f"{study}/inputs.json"
-    if inputs_file.exists():
-        with open(inputs_file) as f:
-            dict_inputs = json.load(f)
+    file_path: Path = working_path / f"{study}/{file_prefix}.json"
+    if file_path.exists():
+        with open(file_path) as f:
+            dict = json.load(f)
     else:
-        dict_inputs = None
+        dict = None
     
-    return dict_inputs
+    return dict
 
 
-def update_inputs_json(
-    dict_inputs: dict,
+def update_json_file(
+    dict: dict,
     working_path: Path,
     study: str,
+    file_prefix: str,
 ):
-    inputs_file: Path = working_path / f"{study}/inputs.json"
-    with open(inputs_file, "w") as f:
-        json.dump(dict_inputs, f, indent=4)
+    file_path: Path = working_path / f"{study}/{file_prefix}.json"
+    with open(file_path, "w") as f:
+        json.dump(dict, f, indent=4)
 
 
 def get_inputs_csv(
@@ -206,13 +208,33 @@ def update_studies_settings(
     working_path: Path,
 ):
     for key, value in dict_settings_wgt.items():
+
+        # -------------- #
+        # Procs settings #
+        # -------------- #
+        dict_procs: dict = get_json_file(
+            working_path=working_path,
+            study=key,
+            file_prefix="process",
+        )
+        for k, v in dict_procs.items():
+            dict_procs[k]["execute"] = value["Procs"][k]["execute"].value
+            dict_procs[k]["silent"] = value["Procs"][k]["silent"].value
+        
+        update_json_file(
+            dict=dict_procs,
+            working_path=working_path,
+            study=key,
+            file_prefix="process",
+        )
         
         # ------------ #
         # Fixed inputs #
         # ------------ #
-        dict_inputs = get_inputs_json(
+        dict_inputs = get_json_file(
             working_path=working_path,
             study=key,
+            file_prefix="inputs",
         )
 
         # Fixed params
@@ -239,6 +261,9 @@ def update_studies_settings(
         )
         if df_inputs is not None:
             for dataset in df_inputs["ID"]:
+
+                # execute
+                df_inputs.loc[df_inputs["ID"] == dataset, "EXECUTE"] = int(value["Variable"][dataset]["execute"].value)
 
                 # Variable params
                 for k, v in value["Variable"][dataset]["params"].items():
@@ -267,8 +292,9 @@ def update_studies_settings(
                 study=key,
             )
 
-        update_inputs_json(
-            dict_inputs=dict_inputs,
+        update_json_file(
+            dict=dict_inputs,
             working_path=working_path,
             study=key,
+            file_prefix="inputs",
         )

@@ -138,6 +138,40 @@ def settings(
         dict_widget[study] = {}
         dict_tab = {}
 
+        # -------------- #
+        # Procs settings #
+        # -------------- #
+        dict_widget[study]["Procs"] = {}
+        dict_procs_wgt = {}
+
+        dict_procs = utils.get_json_file(
+            working_path=working_path,
+            study=study,
+            file_prefix="process",
+        )
+        for key, value in dict_procs.items():
+            
+            dict_widget[study]["Procs"][key] = {}
+            list_procs_wgt = []
+
+            execute_wgt = mo.ui.switch(
+                label="execute",
+                value=value["execute"],
+                on_change=set_state,
+            )
+            dict_widget[study]["Procs"][key]["execute"] = execute_wgt
+            list_procs_wgt.append(execute_wgt)
+
+            silent_wgt = mo.ui.switch(
+                label="silent mode",
+                value=value["silent"],
+                on_change=set_state,
+            )
+            dict_widget[study]["Procs"][key]["silent"] = silent_wgt
+            list_procs_wgt.append(silent_wgt)
+
+            dict_procs_wgt[key] = mo.vstack(list_procs_wgt)
+
         # ------------ #
         # Fixed inputs #
         # ------------ #
@@ -145,9 +179,10 @@ def settings(
         dict_widget[study]["Fixed"]["params"] = {}
         dict_widget[study]["Fixed"]["paths"] = {}
 
-        dict_inputs: dict = utils.get_inputs_json(
+        dict_inputs: dict = utils.get_json_file(
             working_path=working_path,
             study=study,
+            file_prefix="inputs",
         )
         
         if app.workflow.fixed_params[study] or app.workflow.fixed_paths[study]:
@@ -259,6 +294,13 @@ def settings(
 
                 list_variable_params_wgt = []
                 list_variable_paths_wgt = []
+
+                execute_wgt = mo.ui.switch(
+                    label="execute",
+                    value=bool(df_inputs.loc[df_inputs["ID"] == dataset, "EXECUTE"].values[0]),
+                    on_change=set_state,
+                )
+                dict_widget[study]["Variable"][dataset]["execute"] = execute_wgt
             
                 # Variable params
                 if app.workflow.variable_params[study]:
@@ -339,6 +381,8 @@ def settings(
                     list_variable_paths_wgt.append(w)
 
                 list_variable_wgt = []
+                list_variable_wgt.append(mo.vstack([mo.md("    ")]))
+                list_variable_wgt.append(mo.vstack([execute_wgt]))
                 if list_variable_params_wgt:
                     list_variable_wgt.append(mo.vstack([mo.md("    ")]))
                     list_variable_wgt.append(mo.vstack(list_variable_params_wgt))
@@ -352,23 +396,15 @@ def settings(
                     mo.accordion(
                         items=dict_accordion_datasets,
                     ),
-                ],
-            )
+                ])
 
-        dict_tabs[study] = mo.ui.tabs(
-            tabs=dict_tab,
-        )
+        dict_tabs[study] = mo.vstack([
+            mo.vstack([mo.accordion(items=dict_procs_wgt)]),
+            mo.vstack([mo.ui.tabs(tabs=dict_tab)]),
+        ])
 
     widget = mo.ui.tabs(
         tabs=dict_tabs,
     )
-
-    # widget = mo.vstack([
-    #         mo.vstack(list_widget),
-    #         mo.ui.tabs(
-    #             tabs=dict_tabs,
-    #         ),
-    #     ],
-    # )
 
     return widget, dict_widget
