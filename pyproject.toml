@@ -1,0 +1,32 @@
+[project]
+name = "nuremics-studio" 
+version = "1.0.0"
+description = "nuRemics is an open-source Python framework for building software-grade scientific tools."
+authors = [
+  { name = "Julien SIGUENZA", email = "contact@julien-siguenza.com" },
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = [
+  "LICENSE",
+  "LICENSE_TRADEMARK",
+]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/nuremics/nuremics-studio"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"nuremics.resources" = [
+  "*.png",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

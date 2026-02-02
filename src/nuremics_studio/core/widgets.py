@@ -2,8 +2,129 @@ import marimo as mo
 import pandas as pd
 from pathlib import Path
 
-import utils
 from nuremics import Application
+import nuremics_studio.core.utils as utils
+
+
+def app_banner(
+    app_name: str,
+    app_logo: str,
+    app_color: str,
+    app_link: str,
+):
+    if app_link is not None:
+
+        widget = mo.Html(f"""
+            <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap" rel="stylesheet">
+
+            <style>
+            .jost-banner-link {{
+                text-decoration: none;
+                display: block;
+            }}
+
+            .jost-banner {{
+                display: flex;
+                align-items: center;
+                gap: 14px;
+
+                font-family: 'Jost', sans-serif;
+                color: white;
+                font-size: 30px;
+                font-weight: 600;
+
+                background-color: {app_color};
+                padding: 14px 20px;
+                border-radius: 10px;
+
+                box-shadow: 0 0 14px rgba(0, 0, 0, 0.25);
+
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }}
+
+            .jost-banner:hover {{
+                transform: scale(1.005);
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            }}
+
+            .jost-banner img {{
+                height: 50px;
+            }}
+            </style>
+
+            <a href="{app_link}" target="_blank" class="jost-banner-link">
+                <div class="jost-banner">
+                    <img src="{app_logo}">
+                    <div>
+                        <strong> {app_name} </strong>
+                    </div>
+                </div>
+            </a>
+        """)
+    
+    else:
+
+        widget = mo.Html(f"""
+            <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap" rel="stylesheet">
+
+            <style>
+            .jost-banner-link {{
+                text-decoration: none;
+                display: block;
+            }}
+
+            .jost-banner {{
+                display: flex;
+                align-items: center;
+                gap: 14px;
+
+                font-family: 'Jost', sans-serif;
+                color: white;
+                font-size: 30px;
+                font-weight: 600;
+
+                background-color: {app_color};
+                padding: 14px 20px;
+                border-radius: 10px;
+
+                box-shadow: 0 0 14px rgba(0, 0, 0, 0.25);
+
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }}
+
+            .jost-banner img {{
+                height: 50px;
+            }}
+            </style>
+
+            <div class="jost-banner">
+                <img src="{app_logo}">
+                <div>
+                    <strong> {app_name} </strong>
+                </div>
+            </div>
+        """)
+
+    return widget
+
+
+def app_visual(
+    file: str,
+):
+    if file is not None:
+        image = mo.image(
+            src=file,
+            width=None,
+        )
+        widget = mo.vstack([mo.vstack([image], align="center")])
+    else:
+        widget = mo.vstack([
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+        ])
+    
+    return widget
 
 
 def working_dir(

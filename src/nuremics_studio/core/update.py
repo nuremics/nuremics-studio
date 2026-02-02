@@ -1,76 +1,8 @@
-import json
 import copy
-import base64
-import pandas as pd
 from pathlib import Path
-from platformdirs import user_config_path
 
 from nuremics import Application
-
-CONFIG_PATH = user_config_path(
-    appname="nuRemics",
-    appauthor=False,
-)
-SETTINGS_FILE: Path = CONFIG_PATH / "settings.json"
-
-
-def image_to_data_url(path):
-    with open(path, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode("utf-8")
-    return f"data:image/png;base64,{encoded}"
-
-
-def get_app_features(
-    app_name: str,
-):
-    app_features = {
-        "import": None,
-        "link": None,
-        "visual": None,
-        "logo": None,
-        "color": None,
-    }
-    if app_name == "DEMO_APP":
-        app_features["import"] = "general.DEMO_APP"
-        app_features["link"] = "https://nuremics.github.io/labs/apps/general/DEMO_APP"
-        app_features["visual"] = "https://raw.githubusercontent.com/nuremics/nuremics-docs/main/docs/images/DEMO_APP.png"
-        app_features["logo"] = "https://raw.githubusercontent.com/nuremics/nuremics-docs/main/docs/images/logo.png"
-        app_features["color"] = "#0080ff6f"
-
-    return app_features
-
-
-def get_settings():
-    with open(SETTINGS_FILE) as f:
-        dict_settings = json.load(f)
-    
-    return dict_settings
-
-
-def update_settings(
-    dict_settings: dict
-):
-    with open(SETTINGS_FILE, "w") as f:
-        json.dump(dict_settings, f, indent=4)
-
-
-def get_studies(
-    working_path: Path,
-):
-    studies_file: Path = working_path / "studies.json"
-    with open(studies_file) as f:
-        dict_studies = json.load(f)
-    
-    return dict_studies
-
-
-def update_studies(
-    working_path: Path,
-    dict_studies: dict,
-):
-    studies_file: Path = working_path / "studies.json"
-    with open(studies_file, "w") as f:
-        json.dump(dict_studies, f, indent=4)
+import nuremics_studio.core.utils as utils
 
 
 def update_dict_studies(
@@ -90,89 +22,6 @@ def update_dict_studies(
     return dict_studies_configured
 
 
-def update_list_studies(
-    working_path: Path,
-    list_studies: list,
-):
-    studies_file: Path = working_path / "studies.json"
-    with open(studies_file) as f:
-        dict_studies = json.load(f)
-
-    dict_studies["studies"] = list_studies
-    with open(studies_file, "w") as f:
-        json.dump(dict_studies, f, indent=4)
-
-
-def get_json_file(
-    working_path: Path,
-    study: str,
-    file_prefix: str,
-):
-    file_path: Path = working_path / f"{study}/{file_prefix}.json"
-    if file_path.exists():
-        with open(file_path) as f:
-            dict = json.load(f)
-    else:
-        dict = None
-    
-    return dict
-
-
-def update_json_file(
-    dict: dict,
-    working_path: Path,
-    study: str,
-    file_prefix: str,
-):
-    file_path: Path = working_path / f"{study}/{file_prefix}.json"
-    with open(file_path, "w") as f:
-        json.dump(dict, f, indent=4)
-
-
-def get_inputs_csv(
-    app: Application,
-    working_path: Path,
-    study: str,
-):
-    inputs_file: Path = working_path / f"{study}/inputs.csv"
-    
-    if inputs_file.exists():
-        df_inputs_col = pd.read_csv(inputs_file, nrows=0)
-        
-        dtypes = {
-            "ID": "string",
-            "EXECUTE": "Int64",
-        }
-        for col in df_inputs_col.columns[1:-1]:
-            if app.workflow.params_type[col][1] == "int":
-                dtypes[col] = "Int64"
-            if app.workflow.params_type[col][1] == "float":
-                dtypes[col] = "float64"
-            if app.workflow.params_type[col][1] == "bool":
-                dtypes[col] = "boolean"
-            if app.workflow.params_type[col][1] == "str":
-                dtypes[col] = "string"
-        
-        df_inputs = pd.read_csv(inputs_file, dtype=dtypes)
-    
-    else:
-        df_inputs = None
-
-    return df_inputs
-
-
-def update_inputs_csv(
-    df_inputs: pd.DataFrame,
-    working_path: Path,
-    study: str,    
-):
-    inputs_file: Path = working_path / f"{study}/inputs.csv"
-    df_inputs.to_csv(
-        path_or_buf=inputs_file,
-        index=False,
-    )
-
-
 def update_datasets(
     app: Application,
     dict_datasets_wgt: dict,
@@ -182,7 +31,7 @@ def update_datasets(
     if datasets is not None:
         for col in datasets.value.columns:
             
-            df_inputs = get_inputs_csv(
+            df_inputs = utils.get_inputs_csv(
                 app=app,
                 working_path=working_path,
                 study=col,
@@ -195,7 +44,7 @@ def update_datasets(
 
             df_inputs = df_inputs[df_inputs["ID"].isin(list_datasets)]
 
-            update_inputs_csv(
+            utils.update_inputs_csv(
                 df_inputs=df_inputs,
                 working_path=working_path,
                 study=col,
@@ -212,7 +61,7 @@ def update_studies_settings(
         # -------------- #
         # Procs settings #
         # -------------- #
-        dict_procs: dict = get_json_file(
+        dict_procs: dict = utils.get_json_file(
             working_path=working_path,
             study=key,
             file_prefix="process",
@@ -221,7 +70,7 @@ def update_studies_settings(
             dict_procs[k]["execute"] = value["Procs"][k]["execute"].value
             dict_procs[k]["silent"] = value["Procs"][k]["silent"].value
         
-        update_json_file(
+        utils.update_json_file(
             dict=dict_procs,
             working_path=working_path,
             study=key,
@@ -231,7 +80,7 @@ def update_studies_settings(
         # ------------ #
         # Fixed inputs #
         # ------------ #
-        dict_inputs = get_json_file(
+        dict_inputs = utils.get_json_file(
             working_path=working_path,
             study=key,
             file_prefix="inputs",
@@ -254,7 +103,7 @@ def update_studies_settings(
         # --------------- #
         # Variable inputs #
         # --------------- #
-        df_inputs = get_inputs_csv(
+        df_inputs = utils.get_inputs_csv(
             app=app,
             working_path=working_path,
             study=key,
@@ -286,13 +135,13 @@ def update_studies_settings(
                     else:
                         dict_inputs[k][dataset] = None
 
-            update_inputs_csv(
+            utils.update_inputs_csv(
                 df_inputs=df_inputs,
                 working_path=working_path,
                 study=key,
             )
 
-        update_json_file(
+        utils.update_json_file(
             dict=dict_inputs,
             working_path=working_path,
             study=key,

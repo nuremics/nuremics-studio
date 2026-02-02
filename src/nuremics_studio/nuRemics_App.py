@@ -1,17 +1,17 @@
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.19.7"
 app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
     import sys
-    import attrs
     import importlib
     import marimo as mo
     from pathlib import Path
 
-    import utils
-    import widgets as wgt
+    import nuremics_studio.core.utils as utils
+    import nuremics_studio.core.widgets as wgt
+    import nuremics_studio.core.update as upt
 
     app_name = sys.argv[1]
 
@@ -31,63 +31,22 @@ with app.setup(hide_code=True):
 
 @app.cell(hide_code=True)
 def _():
-    mo.Html(f"""
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap" rel="stylesheet">
-
-    <style>
-    .jost-banner-link {{
-        text-decoration: none;
-        display: block;
-    }}
-
-    .jost-banner {{
-        display: flex;
-        align-items: center;
-        gap: 14px;
-
-        font-family: 'Jost', sans-serif;
-        color: white;
-        font-size: 30px;
-        font-weight: 600;
-
-        background-color: {app_color};
-        padding: 14px 20px;
-        border-radius: 10px;
-
-        box-shadow: 0 0 14px rgba(0, 0, 0, 0.25);
-
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }}
-
-    .jost-banner:hover {{
-        transform: scale(1.005);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-    }}
-
-    .jost-banner img {{
-        height: 50px;
-    }}
-    </style>
-
-    <a href="{app_link}" target="_blank" class="jost-banner-link">
-        <div class="jost-banner">
-            <img src="{app_logo}">
-            <div>
-                <strong> {app_name} </strong>
-            </div>
-        </div>
-    </a>
-    """)
+    app_banner_wgt = wgt.app_banner(
+        app_name=app_name,
+        app_logo=app_logo,
+        app_color=app_color,
+        app_link=app_link,
+    )
+    app_banner_wgt
     return
 
 
 @app.cell(hide_code=True)
 def _():
-    image = mo.image(
-        src=app_visual,
-        width=None,
+    app_visual_wgt = wgt.app_visual(
+        file=app_visual,
     )
-    mo.vstack([mo.vstack([image], align="center")])
+    app_visual_wgt
     return
 
 
@@ -239,7 +198,7 @@ def _(
 
     _ = get_state_config()
 
-    dict_studies_configured = utils.update_dict_studies(
+    dict_studies_configured = upt.update_dict_studies(
         dict_studies=dict_studies_to_config,
         dict_config_wgt=dict_config_wgt,
     )
@@ -303,7 +262,7 @@ def _(
 
     _ = get_state_datasets()
 
-    utils.update_datasets(
+    upt.update_datasets(
         app=app,
         dict_datasets_wgt=dict_datasets_wgt,
         working_path=working_path,
@@ -362,7 +321,7 @@ def _(
 
     _ = get_state_settings()
 
-    utils.update_studies_settings(
+    upt.update_studies_settings(
         app=app,
         dict_settings_wgt=dict_settings_wgt,
         working_path=working_path,

@@ -2,7 +2,7 @@
 channels = ["conda-forge"]
 name = "nuremics-studio"
 platforms = ["linux-64", "win-64", "osx-64", "osx-arm64"]
-version = "0.1.0"
+version = "1.0.0"
 
 [tasks]
 
@@ -13,6 +13,9 @@ pandas = ">=2.1.1,<4"
 platformdirs = ">=4.5.1,<5"
 rclone = ">=1.72.1,<2"
 
+[pypi-dependencies]
+nuremics-studio  = { path = ".", editable = true }
+
 [feature.CORE.pypi-dependencies]
 nuremics-labs = { git = "https://github.com/nuremics/nuremics-labs.git", branch = "upgrades-for-gui"}
 
@@ -21,8 +24,8 @@ nuremics-labs = { path = "../nuremics-labs", editable = true, extras = ["DEMO_AP
 #nuremics-labs = { git = "https://github.com/nuremics/nuremics-labs.git", branch = "upgrades-for-gui", extras = ["DEMO_APP"] }
 
 [feature.DEMO_APP.tasks]
-DEMO_APP-edit = "marimo edit src/nuRemics_App.py 'DEMO_APP'"
-DEMO_APP = "marimo run src/nuRemics_App.py 'DEMO_APP'"
+DEMO_APP-edit = "marimo edit src/nuremics_studio/nuRemics_App.py 'DEMO_APP'"
+DEMO_APP = "marimo run src/nuremics_studio/nuRemics_App.py 'DEMO_APP'"
 notebook-edit = "marimo edit src/DEMO_APP_notebook.py"
 notebook = "marimo run src/DEMO_APP_notebook.py"
 
