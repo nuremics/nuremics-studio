@@ -1,6 +1,7 @@
 import json
 import base64
 import importlib
+import importlib.util
 import pandas as pd
 from pathlib import Path
 from platformdirs import user_config_path
@@ -23,7 +24,7 @@ def image_to_data_url(path):
 def get_app_features(
     app_name: str,
 ):
-    module_path = f"apps.{app_name}.utils"
+    module_path = f"nuremics_studio.apps.{app_name}.utils"
     module = importlib.import_module(module_path)
     func_features = getattr(module, "get_app_features")
 
@@ -43,6 +44,30 @@ def get_app_features(
         app_features["color"] = "#0080ff6f"
 
     return app_features
+
+
+def load_module(
+    module_path: str
+):
+    spec = importlib.util.find_spec(module_path)
+    if spec is not None:
+        module = importlib.import_module(module_path)
+    else:
+        module = None
+
+    return module
+
+
+def get_function(
+    module,
+    func_name: str
+):
+    if hasattr(module, func_name):
+        func = getattr(module, func_name)
+    else:
+        func = None
+    
+    return func
 
 
 def get_settings():

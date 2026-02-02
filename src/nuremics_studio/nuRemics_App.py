@@ -71,7 +71,7 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    workflow, app = main(stage=None)
+    _, app, default_params = main(stage=None)
 
     dict_settings = utils.get_settings()
 
@@ -82,7 +82,7 @@ def _():
             working_dir = dict_settings["default_working_dir"]
         else:
             working_dir = ""
-    return app, dict_settings, working_dir
+    return app, default_params, dict_settings, working_dir
 
 
 @app.cell(hide_code=True)
@@ -209,7 +209,7 @@ def _(
     )
 
     try:
-        _, app_configured = main(stage="config")
+        _, app_configured, _ = main(stage="config")
     except SystemExit:
         pass
     return (app_configured,)
@@ -286,6 +286,7 @@ def _(get_state_datasets, is_valid_list_studies):
 @app.cell(hide_code=True)
 def _(
     app_configured,
+    default_params,
     get_state_config,
     get_state_datasets,
     is_valid_list_studies,
@@ -301,6 +302,7 @@ def _(
 
     settings_wgt, dict_settings_wgt = wgt.settings(
         app=app_configured,
+        default_params=default_params,
         working_path=working_path,
         list_studies=list_studies,
         set_state=set_state_settings,

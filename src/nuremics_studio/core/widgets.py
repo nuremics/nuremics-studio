@@ -170,7 +170,7 @@ def config(
         list_wgt.append(mo.vstack([execute_wgt]))
         dict_widget[key]["execute"] = execute_wgt
 
-        list_wgt.append(mo.md("**INPUT PARAMETERS** _(check parameters that are variable within the study)_"))
+        list_wgt.append(mo.md("**INPUT PARAMETERS**"))
 
         dict_user_params_wgt = {}
         for k, v in value["user_params"].items():
@@ -188,7 +188,7 @@ def config(
 
         dict_widget[key]["user_params"] = dict_user_params_wgt
 
-        list_wgt.append(mo.md("**INPUT PATHS** _(check paths that are variable within the study)_"))
+        list_wgt.append(mo.md("**INPUT PATHS**"))
 
         dict_user_paths_wgt = {}
         for k, v in value["user_paths"].items():
@@ -248,10 +248,23 @@ def datasets(
 
 def settings(
     app: Application,
+    default_params: dict,
     working_path: Path,
     list_studies: list[str],
     set_state,
 ):
+    module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
+    module = utils.load_module(
+        module_path=module_path,
+    )
+    if module is not None:
+        func = utils.get_function(
+            func_name="settings",
+            module=module,
+        )
+    else:
+        func = None
+
     dict_widget = {}
     dict_tabs = {}
     for study in list_studies:
@@ -314,30 +327,35 @@ def settings(
 
             # Fixed params
             if app.workflow.fixed_params[study]:
-                list_fixed_params_wgt.append(mo.md("**INPUT PARAMETERS** _(set parameters values)_"))
+                list_fixed_params_wgt.append(mo.md("**INPUT PARAMETERS**"))
 
             for param in app.workflow.fixed_params[study]:
+
+                if (dict_inputs[param] is None) and (param in default_params):
+                    value = default_params[param]
+                else:
+                    value = dict_inputs[param]
 
                 if app.workflow.params_type[param][1] == "float":
                     w = mo.ui.number(
                         label=f"{param}:",
-                        value=dict_inputs[param],
+                        value=value,
                         on_change=set_state,
                     )
 
                 elif app.workflow.params_type[param][1] == "int":
                     w = mo.ui.number(
                         label=f"{param}:",
-                        value=dict_inputs[param],
+                        value=value,
                         step=1,
                         on_change=set_state,
                     )
 
                 elif app.workflow.params_type[param][1] == "bool":
-                    if dict_inputs[param] is None:
+                    if value is None:
                         val = False
                     else:
-                        val = dict_inputs[param]
+                        val = value
                     w = mo.ui.checkbox(
                         label=param,
                         value=val,
@@ -345,10 +363,10 @@ def settings(
                     )
 
                 elif app.workflow.params_type[param][1] == "str":
-                    if dict_inputs[param] is None:
+                    if value is None:
                         val = ""
                     else:
-                        val = dict_inputs[param]
+                        val = value
                     w = mo.ui.text(
                         label=f"{param}:",
                         value=val,
@@ -360,7 +378,7 @@ def settings(
 
             # Fixed paths
             if app.workflow.fixed_paths[study]:
-                list_fixed_paths_wgt.append(mo.md("**INPUT PATHS** _(set paths or add files/folders to the requested location)_"))
+                list_fixed_paths_wgt.append(mo.md("**INPUT PATHS**"))
 
             for path in app.workflow.fixed_paths[study]:
                 
@@ -389,6 +407,14 @@ def settings(
             if list_fixed_paths_wgt:
                 list_fixed_wgt.append(mo.vstack([mo.md("    ")]))
                 list_fixed_wgt.append(mo.vstack(list_fixed_paths_wgt))
+
+            if func is not None:
+                dict_tabs_paths = func(
+                    working_path=working_path / f"{study}/0_inputs",
+                    list_paths=app.workflow.fixed_paths[study],
+                    set_state=set_state,
+                )
+                list_fixed_wgt.append(mo.ui.tabs(tabs=dict_tabs_paths))
 
             dict_tab["Fixed"] = mo.vstack(list_fixed_wgt)
 
@@ -425,13 +451,16 @@ def settings(
             
                 # Variable params
                 if app.workflow.variable_params[study]:
-                    list_variable_params_wgt.append(mo.md("**INPUT PARAMETERS** _(set parameters values)_"))
+                    list_variable_params_wgt.append(mo.md("**INPUT PARAMETERS**"))
 
                 for param in app.workflow.variable_params[study]:
                     
                     val_param = df_inputs.loc[df_inputs["ID"] == dataset, param].values[0]
-                    if pd.isna(val_param):
-                        val_param = None
+                    if (pd.isna(val_param)):
+                        if param in default_params:
+                            val_param = default_params[param]
+                        else:
+                            val_param = None
 
                     if app.workflow.params_type[param][1] == "float":
                         if val_param is not None:
@@ -479,7 +508,7 @@ def settings(
 
                 # Variable paths
                 if app.workflow.variable_paths[study]:
-                    list_variable_paths_wgt.append(mo.md("**INPUT PATHS** _(set paths or add files/folders to the requested location)_"))
+                    list_variable_paths_wgt.append(mo.md("**INPUT PATHS**"))
 
                 for path in app.workflow.variable_paths[study]:
                     
@@ -510,6 +539,14 @@ def settings(
                 if list_variable_paths_wgt:
                     list_variable_wgt.append(mo.vstack([mo.md("    ")]))
                     list_variable_wgt.append(mo.vstack(list_variable_paths_wgt))
+
+                if func is not None:
+                    dict_tabs_paths = func(
+                        working_path=working_path / f"{study}/0_inputs/0_datasets/{dataset}",
+                        list_paths=app.workflow.variable_paths[study],
+                        set_state=set_state,
+                    )
+                    list_variable_wgt.append(mo.ui.tabs(tabs=dict_tabs_paths))
 
                 dict_accordion_datasets[dataset] = mo.vstack(list_variable_wgt)
 
