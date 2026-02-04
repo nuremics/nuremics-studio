@@ -380,7 +380,20 @@ def settings(
             if app.workflow.fixed_paths[study]:
                 list_fixed_paths_wgt.append(mo.md("**INPUT PATHS**"))
 
+            widget_fixed_paths = {}
+            dict_widget_fixed_paths = {}
+            if func is not None:
+                widget_fixed_paths, dict_widget_fixed_paths = func(
+                    working_path=working_path / f"{study}/0_inputs",
+                    list_paths=app.workflow.fixed_paths[study],
+                    set_state=set_state,
+                )
+
             for path in app.workflow.fixed_paths[study]:
+
+                if path in widget_fixed_paths:
+                    dict_widget[study]["Fixed"]["paths"][path] = dict_widget_fixed_paths[path]
+                    continue
                 
                 if dict_inputs[path] is None:
                     val = ""
@@ -407,14 +420,8 @@ def settings(
             if list_fixed_paths_wgt:
                 list_fixed_wgt.append(mo.vstack([mo.md("    ")]))
                 list_fixed_wgt.append(mo.vstack(list_fixed_paths_wgt))
-
-            if func is not None:
-                dict_tabs_paths = func(
-                    working_path=working_path / f"{study}/0_inputs",
-                    list_paths=app.workflow.fixed_paths[study],
-                    set_state=set_state,
-                )
-                list_fixed_wgt.append(mo.ui.tabs(tabs=dict_tabs_paths))
+            if widget_fixed_paths:
+                list_fixed_wgt.append(mo.ui.tabs(tabs=widget_fixed_paths))
 
             dict_tab["Fixed"] = mo.vstack(list_fixed_wgt)
 
@@ -510,7 +517,20 @@ def settings(
                 if app.workflow.variable_paths[study]:
                     list_variable_paths_wgt.append(mo.md("**INPUT PATHS**"))
 
+                widget_variable_paths = {}
+                dict_widget_variable_paths = {}
+                if func is not None:
+                    widget_variable_paths, dict_widget_variable_paths = func(
+                        working_path=working_path / f"{study}/0_inputs/0_datasets/{dataset}",
+                        list_paths=app.workflow.variable_paths[study],
+                        set_state=set_state,
+                    )
+
                 for path in app.workflow.variable_paths[study]:
+
+                    if path in widget_variable_paths:
+                        dict_widget[study]["Variable"][dataset]["paths"][path] = dict_widget_variable_paths[path]
+                        continue
                     
                     if dict_inputs[path][dataset] is None:
                         val = ""
@@ -539,14 +559,8 @@ def settings(
                 if list_variable_paths_wgt:
                     list_variable_wgt.append(mo.vstack([mo.md("    ")]))
                     list_variable_wgt.append(mo.vstack(list_variable_paths_wgt))
-
-                if func is not None:
-                    dict_tabs_paths = func(
-                        working_path=working_path / f"{study}/0_inputs/0_datasets/{dataset}",
-                        list_paths=app.workflow.variable_paths[study],
-                        set_state=set_state,
-                    )
-                    list_variable_wgt.append(mo.ui.tabs(tabs=dict_tabs_paths))
+                if widget_variable_paths:
+                    list_variable_wgt.append(mo.ui.tabs(tabs=widget_variable_paths))
 
                 dict_accordion_datasets[dataset] = mo.vstack(list_variable_wgt)
 

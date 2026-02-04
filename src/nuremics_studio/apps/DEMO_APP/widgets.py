@@ -10,7 +10,8 @@ def settings(
     list_paths: list,
     set_state,
 ):
-    dict_tabs_paths = {}
+    widget_paths = {}
+    dict_widget_paths = {}
     for path in list_paths:
 
         if path == "plot_title.txt":
@@ -29,7 +30,8 @@ def settings(
                 value=value,
                 on_change=set_state,
             )
-            dict_tabs_paths[path] = widget
+            widget_paths[path] = widget
+            dict_widget_paths[path] = widget
 
         if path == "velocity.json":
 
@@ -46,6 +48,7 @@ def settings(
                     json.dump(dict_velocity, f, indent=4)
             
             list_widget = []
+            dict_widget_paths[path] = {}
             for key, value in dict_velocity.items():
 
                 w = mo.ui.number(
@@ -54,9 +57,10 @@ def settings(
                     on_change=set_state,
                 )
                 list_widget.append(w)
+                dict_widget_paths[path][key] = w
             
             widget = mo.vstack(list_widget)
-            dict_tabs_paths[path] = widget
+            widget_paths[path] = widget
         
         if path == "configs":
 
@@ -85,6 +89,7 @@ def settings(
                     json.dump(dict_solver, f, indent=4)
 
             list_widget = []
+            dict_widget_paths[path] = {}
             for key, value in dict_display.items():
 
                 w = mo.ui.number(
@@ -94,6 +99,7 @@ def settings(
                     on_change=set_state,
                 )
                 list_widget.append(w)
+                dict_widget_paths[path][key] = w
             
             dict_tabs_files["display_config.json"] = mo.vstack(list_widget)
 
@@ -106,10 +112,11 @@ def settings(
                     on_change=set_state,
                 )
                 list_widget.append(w)
+                dict_widget_paths[path][key] = w
             
             dict_tabs_files["solver_config.json"] = mo.vstack(list_widget)
 
             widget = mo.ui.tabs(tabs=dict_tabs_files)
-            dict_tabs_paths[path] = widget
+            widget_paths[path] = widget
     
-    return dict_tabs_paths
+    return widget_paths, dict_widget_paths
