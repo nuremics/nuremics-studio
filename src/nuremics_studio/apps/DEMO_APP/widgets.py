@@ -2,8 +2,6 @@ import json
 import marimo as mo
 from pathlib import Path
 
-import nuremics_studio.core.utils as utils
-
 
 def settings(
     working_path: Path,
@@ -18,7 +16,7 @@ def settings(
 
             file_path = working_path / path
             if file_path.exists():
-                with open(working_path / path) as f:
+                with open(file_path) as f:
                     value = f.read()
             else:
                 value = "2D polygon shape"
@@ -37,7 +35,7 @@ def settings(
 
             file_path = working_path / path
             if file_path.exists():
-                with open(working_path / path) as f:
+                with open(file_path) as f:
                     dict_velocity = json.load(f)
             else:
                 dict_velocity = {
@@ -91,7 +89,7 @@ def settings(
             list_widget = []
             dict_widget_paths[path] = {}
             for key, value in dict_display.items():
-
+                
                 w = mo.ui.number(
                     label=f"{key}:",
                     value=value,

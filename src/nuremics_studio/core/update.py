@@ -56,6 +56,18 @@ def update_studies_settings(
     dict_settings_wgt: dict,
     working_path: Path,
 ):
+    module_path = f"nuremics_studio.apps.{app.workflow.app_name}.update"
+    module = utils.load_module(
+        module_path=module_path,
+    )
+    if module is not None:
+        func = utils.get_function(
+            func_name="update_studies_settings",
+            module=module,
+        )
+    else:
+        func = None
+    
     for key, value in dict_settings_wgt.items():
 
         # -------------- #
@@ -94,11 +106,19 @@ def update_studies_settings(
                 dict_inputs[k] = v.value
 
         # Fixed paths
+        list_fixed_paths = []
+        if func is not None:
+            list_fixed_paths = func(
+                working_path=working_path / f"{key}/0_inputs",
+                dict_widget_paths=value["Fixed"]["paths"],
+            )
+
         for k, v in value["Fixed"]["paths"].items():
-            if v.value.strip() != "":
-                dict_inputs[k] = v.value
-            else:
-                dict_inputs[k] = None
+            if k not in list_fixed_paths:
+                if v.value.strip() != "":
+                    dict_inputs[k] = v.value
+                else:
+                    dict_inputs[k] = None
         
         # --------------- #
         # Variable inputs #
@@ -129,11 +149,19 @@ def update_studies_settings(
                         df_inputs.loc[df_inputs["ID"] == dataset, k] = v.value
                 
                 # Variable paths
+                list_variable_paths = []
+                if func is not None:
+                    list_variable_paths = func(
+                        working_path=working_path / f"{key}/0_inputs/0_datasets/{dataset}",
+                        dict_widget_paths=value["Variable"][dataset]["paths"],
+                    )
+
                 for k, v in value["Variable"][dataset]["paths"].items():
-                    if v.value.strip() != "":
-                        dict_inputs[k][dataset] = v.value
-                    else:
-                        dict_inputs[k][dataset] = None
+                    if k not in list_variable_paths:
+                        if v.value.strip() != "":
+                            dict_inputs[k][dataset] = v.value
+                        else:
+                            dict_inputs[k][dataset] = None
 
             utils.update_inputs_csv(
                 df_inputs=df_inputs,

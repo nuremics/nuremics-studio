@@ -311,7 +311,7 @@ def _(
     return dict_settings_wgt, get_state_settings
 
 
-@app.cell(disabled=True, hide_code=True)
+@app.cell(hide_code=True)
 def _(
     app,
     dict_settings_wgt,
@@ -331,7 +331,7 @@ def _(
     return
 
 
-@app.cell(disabled=True, hide_code=True)
+@app.cell(hide_code=True)
 def _(get_state_datasets, get_state_settings, is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
