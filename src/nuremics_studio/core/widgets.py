@@ -583,19 +583,80 @@ def settings(
     return widget, dict_widget
 
 
-# def analysis(
-#     app: Application,
-#     working_path: Path,
-#     list_studies: list,
-#     set_state,
-# ):
+def analysis(
+    working_path: Path,
+    list_studies: list,
+    set_state,
+):
+    dict_widget = {}
+    dict_studies_settings = {}
+    for study in list_studies:
+
+        dict_widget[study] = {}
+
+        dict_analysis: dict = utils.get_json_file(
+            working_path=working_path,
+            study=study,
+            file_prefix="analysis",
+        )
+
+        dict_settings = {}
+        for out, value in dict_analysis.items():
+            if value and next(iter(value.values())):
+                
+                dict_widget[study][out] = {}
+                dict_settings_dataset = {}
+                for dataset, settings in value.items():
+                    
+                    list_widgets = []
+                    dict_widget[study][out][dataset] = {}
+                    for k, v in settings.items():
+
+                        if isinstance(v, str):
+                            w = mo.ui.text(
+                                label=f"{k}:",
+                                value=v,
+                                on_change=set_state,
+                            )
+                    
+                        elif isinstance(v, bool):
+                            w = mo.ui.checkbox(
+                                label=k,
+                                value=v,
+                                on_change=set_state,
+                            )
+                    
+                        elif isinstance(v, int):
+                            w = mo.ui.number(
+                                label=f"{k}:",
+                                value=v,
+                                step=1,
+                                on_change=set_state,
+                            )
+                    
+                        elif isinstance(v, float):
+                            w = mo.ui.number(
+                                label=f"{k}:",
+                                value=v,
+                                on_change=set_state,
+                            )
+                        
+                        list_widgets.append(w)
+                        dict_widget[study][out][dataset][k] = w
+
+                    dict_settings_dataset[dataset] = mo.vstack(list_widgets)
+                dict_settings[out] = mo.accordion(dict_settings_dataset)
+        
+        dict_studies_settings[study] = mo.ui.tabs(dict_settings)
+    widget = mo.ui.tabs(dict_studies_settings)
+
+    return widget, dict_widget
 
 
 def results(
     app: Application,
     working_path: Path,
     list_studies: list,
-    set_state,
 ):
     module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
     module = utils.load_module(
@@ -623,58 +684,6 @@ def results(
                 study=study,
                 file_prefix=".paths",
             )
-            dict_analysis: dict = utils.get_json_file(
-                working_path=working_path,
-                study=study,
-                file_prefix="analysis",
-            )
-
-            dict_settings = {}
-            for out, value in dict_analysis.items():
-                if value and next(iter(value.values())):
-                    
-                    dict_widget[study][out] = {}
-                    dict_settings_dataset = {}
-                    for dataset, settings in value.items():
-                        
-                        list_widgets = []
-                        dict_widget[study][out][dataset] = {}
-                        for k, v in settings.items():
-
-                            if isinstance(v, str):
-                                w = mo.ui.text(
-                                    label=f"{k}:",
-                                    value=v,
-                                    on_change=set_state,
-                                )
-                        
-                            elif isinstance(v, bool):
-                                w = mo.ui.checkbox(
-                                    label=k,
-                                    value=v,
-                                    on_change=set_state,
-                                )
-                        
-                            elif isinstance(v, int):
-                                w = mo.ui.number(
-                                    label=f"{k}:",
-                                    value=v,
-                                    step=1,
-                                    on_change=set_state,
-                                )
-                        
-                            elif isinstance(v, float):
-                                w = mo.ui.number(
-                                    label=f"{k}:",
-                                    value=v,
-                                    on_change=set_state,
-                                )
-                            
-                            list_widgets.append(w)
-                            dict_widget[study][out][dataset][k] = w
-
-                        dict_settings_dataset[dataset] = mo.vstack(list_widgets)
-                    dict_settings[out] = mo.accordion(dict_settings_dataset)
 
             dict_results = {}
             for result_key, builder in dict_results_builder.items():
@@ -689,14 +698,7 @@ def results(
                     all_results = builder(dict_paths[result_key])
 
                 dict_results[result_key] = all_results
-
-            dict_studies_results[study] = mo.vstack([
-                mo.vstack([mo.md("**SETTINGS**")]),
-                mo.vstack([mo.ui.tabs(dict_settings)]),
-                mo.vstack([mo.md("**VISUALIZATION**")]),
-                mo.vstack([mo.ui.tabs(dict_results)]),
-            ])
-        
+            dict_studies_results[study] = mo.ui.tabs(dict_results)
         widget = mo.ui.tabs(dict_studies_results)
     
     else:

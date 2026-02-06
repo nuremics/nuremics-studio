@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 
-def update_studies_settings(
+def studies_settings(
     working_path: Path,
     dict_widget_paths: dict,
 ):

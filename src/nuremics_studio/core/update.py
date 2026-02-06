@@ -5,7 +5,7 @@ from nuremics import Application
 import nuremics_studio.core.utils as utils
 
 
-def update_dict_studies(
+def dict_studies(
     dict_studies: dict,
     dict_config_wgt: dict,
 ):
@@ -22,7 +22,7 @@ def update_dict_studies(
     return dict_studies_configured
 
 
-def update_datasets(
+def datasets(
     app: Application,
     dict_datasets_wgt: dict,
     working_path: Path,
@@ -51,7 +51,7 @@ def update_datasets(
             )
 
 
-def update_studies_settings(
+def studies_settings(
     app: Application,
     dict_settings_wgt: dict,
     working_path: Path,
@@ -62,7 +62,7 @@ def update_studies_settings(
     )
     if module is not None:
         func = utils.get_function(
-            func_name="update_studies_settings",
+            func_name="studies_settings",
             module=module,
         )
     else:
@@ -177,10 +177,10 @@ def update_studies_settings(
         )
 
 
-def update_analysis(
+def analysis(
     app: Application,
     app_import: str,
-    dict_results_wgt: dict,
+    dict_analysis_wgt: dict,
     working_path: Path,
 ):
     module_path = f"nuremics_labs.apps.{app_import}"
@@ -198,7 +198,7 @@ def update_analysis(
             list_procs.append(proc)
 
     dict_procs = {}
-    for study, analysis in dict_results_wgt.items():
+    for study, analysis in dict_analysis_wgt.items():
 
         # ----------------- #
         # Analysis settings #

@@ -199,7 +199,7 @@ def _(
 
     _ = get_state_config()
 
-    dict_studies_configured = upt.update_dict_studies(
+    dict_studies_configured = upt.dict_studies(
         dict_studies=dict_studies_to_config,
         dict_config_wgt=dict_config_wgt,
     )
@@ -263,7 +263,7 @@ def _(
 
     _ = get_state_datasets()
 
-    upt.update_datasets(
+    upt.datasets(
         app=app,
         dict_datasets_wgt=dict_datasets_wgt,
         working_path=working_path,
@@ -324,7 +324,7 @@ def _(
 
     _ = get_state_settings()
 
-    upt.update_studies_settings(
+    upt.studies_settings(
         app=app,
         dict_settings_wgt=dict_settings_wgt,
         working_path=working_path,
@@ -397,7 +397,7 @@ def _(message):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(success):
     mo.stop(not success)
 
@@ -428,22 +428,37 @@ def _(success):
 
 
 @app.cell(hide_code=True)
-def _(app, list_studies, success, working_path):
+def _(list_studies, success, working_path):
     mo.stop(not success)
 
-    get_state_results, set_state_results = mo.state(0)
 
-    results_wgt, dict_results_wgt = wgt.results(
-        app=app,
+    get_state_analysis, set_state_analysis = mo.state(0)
+
+    analysis_wgt, dict_analysis_wgt = wgt.analysis(
         working_path=working_path,
         list_studies=list_studies,
-        set_state=set_state_results,
+        set_state=set_state_analysis,
     )
-    results_wgt
-    return dict_results_wgt, get_state_results
+    analysis_wgt
+    return dict_analysis_wgt, get_state_analysis
 
 
-@app.cell
+@app.cell(hide_code=True)
+def _(app, dict_analysis_wgt, get_state_analysis, success, working_path):
+    mo.stop(not success)
+
+    _ = get_state_analysis()
+
+    upt.analysis(
+        app=app,
+        app_import=app_import,
+        dict_analysis_wgt=dict_analysis_wgt,
+        working_path=working_path,
+    )
+    return
+
+
+@app.cell(hide_code=True)
 def _(success):
     mo.stop(not success)
 
@@ -455,17 +470,17 @@ def _(success):
 
 
 @app.cell(hide_code=True)
-def _(app, dict_results_wgt, get_state_results, success, working_path):
+def _(app, get_state_analysis, list_studies, success, working_path):
     mo.stop(not success)
 
-    _ = get_state_results()
+    _ = get_state_analysis()
 
-    upt.update_analysis(
+    results_wgt, dict_results_wgt = wgt.results(
         app=app,
-        app_import=app_import,
-        dict_results_wgt=dict_results_wgt,
         working_path=working_path,
+        list_studies=list_studies,
     )
+    results_wgt
     return
 
 
