@@ -1,9 +1,10 @@
 import marimo
 
-__generated_with = "0.19.7"
+__generated_with = "0.19.8"
 app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
+    import os
     import sys
     import importlib
     import marimo as mo
@@ -13,7 +14,7 @@ with app.setup(hide_code=True):
     import nuremics_studio.core.widgets as wgt
     import nuremics_studio.core.update as upt
 
-    app_name = sys.argv[1]
+    app_name = os.getenv("NUREMICS_APP")
 
     app_features = utils.get_app_features(
         app_name=app_name,
@@ -412,6 +413,59 @@ def _(success, working_path):
     mo.stop(not success)
 
     mo.vstack([mo.ui.file_browser(initial_path=working_path)])
+    return
+
+
+@app.cell(hide_code=True)
+def _(success):
+    mo.stop(not success)
+
+    mo.md(r"""
+    ### ⚙️ Settings
+    -----------------------------
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(app, list_studies, success, working_path):
+    mo.stop(not success)
+
+    get_state_results, set_state_results = mo.state(0)
+
+    results_wgt, dict_results_wgt = wgt.results(
+        app=app,
+        working_path=working_path,
+        list_studies=list_studies,
+        set_state=set_state_results,
+    )
+    results_wgt
+    return dict_results_wgt, get_state_results
+
+
+@app.cell
+def _(success):
+    mo.stop(not success)
+
+    mo.md(r"""
+    ### 👁️ Visualization
+    -----------------------------
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(app, dict_results_wgt, get_state_results, success, working_path):
+    mo.stop(not success)
+
+    _ = get_state_results()
+
+    upt.update_analysis(
+        app=app,
+        app_import=app_import,
+        dict_results_wgt=dict_results_wgt,
+        working_path=working_path,
+    )
     return
 
 

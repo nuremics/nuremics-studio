@@ -24,8 +24,8 @@ nuremics-labs = { path = "../nuremics-labs", editable = true, extras = ["DEMO_AP
 #nuremics-labs = { git = "https://github.com/nuremics/nuremics-labs.git", branch = "upgrades-for-gui", extras = ["DEMO_APP"] }
 
 [feature.DEMO_APP.tasks]
-DEMO_APP-edit = "marimo edit src/nuremics_studio/nuRemics_App.py 'DEMO_APP'"
-DEMO_APP = "marimo run src/nuremics_studio/nuRemics_App.py 'DEMO_APP'"
+DEMO_APP-edit = "NUREMICS_APP=DEMO_APP marimo edit src/nuremics_studio/nuRemics_App.py"
+DEMO_APP = "NUREMICS_APP=DEMO_APP marimo run src/nuremics_studio/nuRemics_App.py"
 notebook-edit = "marimo edit src/DEMO_APP_notebook.py"
 notebook = "marimo run src/DEMO_APP_notebook.py"
 

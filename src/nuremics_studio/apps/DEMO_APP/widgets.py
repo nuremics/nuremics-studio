@@ -1,5 +1,7 @@
+import os
 import json
 import marimo as mo
+import pandas as pd
 from pathlib import Path
 
 
@@ -118,3 +120,37 @@ def settings(
             widget_paths[path] = widget
     
     return widget_paths, dict_widget_paths
+
+
+def results():
+
+    def _image_result(
+        value: str,
+    ):
+        image = mo.image(
+            src=value,
+            width=600,
+        )
+        return mo.vstack([mo.vstack([image], align="center")])
+    
+    def _folder_result(
+        value: str,
+    ):
+        image = mo.image(
+            src=os.path.join(value, "model_vs_theory.png"),
+            width=600,
+        )
+        tabs = mo.ui.tabs(
+            tabs={
+                "model_vs_theory.png": mo.vstack([mo.vstack([image], align="center")])
+            }
+        )
+        return tabs
+
+    dict_results_builder = {
+        "polygon_shape.png": _image_result,
+        "comparison": _folder_result,
+        "overall_comparisons.png": _image_result,
+    }
+
+    return dict_results_builder

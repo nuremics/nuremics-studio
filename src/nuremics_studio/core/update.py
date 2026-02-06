@@ -175,3 +175,97 @@ def update_studies_settings(
             study=key,
             file_prefix="inputs",
         )
+
+
+def update_analysis(
+    app: Application,
+    app_import: str,
+    dict_results_wgt: dict,
+    working_path: Path,
+):
+    module_path = f"nuremics_labs.apps.{app_import}"
+    module = utils.load_module(
+        module_path=module_path,
+    )
+    func = utils.get_function(
+        func_name="main",
+        module=module,
+    )
+
+    list_procs = []
+    for proc, value in app.workflow.analysis_plug.items():
+        if value:
+            list_procs.append(proc)
+
+    dict_procs = {}
+    for study, analysis in dict_results_wgt.items():
+
+        # ----------------- #
+        # Analysis settings #
+        # ----------------- #
+        dict_analysis: dict = utils.get_json_file(
+            working_path=working_path,
+            study=study,
+            file_prefix="analysis",
+        )
+        for out, value in analysis.items():
+            for dataset, settings in value.items():
+                for k, v in settings.items():
+                    dict_analysis[out][dataset][k] = v.value
+        
+        utils.update_json_file(
+            dict=dict_analysis,
+            working_path=working_path,
+            study=study,
+            file_prefix="analysis",
+        )
+
+        # ------------------ #
+        # Run analysis Procs #
+        # ------------------ #
+        dict_process: dict = utils.get_json_file(
+            working_path=working_path,
+            study=study,
+            file_prefix="process",
+        )
+        dict_procs[study] = copy.deepcopy(dict_process)
+        for proc, _ in dict_process.items():
+            if proc not in list_procs:
+                dict_process[proc]["execute"] = False
+            else:
+                dict_process[proc]["execute"] = True
+                dict_process[proc]["silent"] = True
+        
+        utils.update_json_file(
+            dict=dict_process,
+            working_path=working_path,
+            study=study,
+            file_prefix="process",
+        )
+
+    dict_studies = utils.get_studies(
+        working_path= working_path,
+    )
+    dict_studies_modified = copy.deepcopy(dict_studies)
+    for study, _ in dict_studies_modified["config"].items():
+        dict_studies_modified["config"][study]["execute"] = True
+    
+    utils.update_studies(
+        working_path=working_path,
+        dict_studies=dict_studies_modified,
+    )
+    
+    func(stage="run")
+
+    for study, process in dict_procs.items():
+        utils.update_json_file(
+            dict=process,
+            working_path=working_path,
+            study=study,
+            file_prefix="process",
+        )
+    
+    utils.update_studies(
+        working_path=working_path,
+        dict_studies=dict_studies,
+    )
