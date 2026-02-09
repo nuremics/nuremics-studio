@@ -1,4 +1,3 @@
-import json
 import marimo as mo
 import pandas as pd
 from pathlib import Path
@@ -601,15 +600,15 @@ def analysis(
         )
 
         dict_settings = {}
-        for out, value in dict_analysis.items():
+        for proc, value in dict_analysis.items():
             if value and next(iter(value.values())):
                 
-                dict_widget[study][out] = {}
+                dict_widget[study][proc] = {}
                 dict_settings_dataset = {}
                 for dataset, settings in value.items():
                     
                     list_widgets = []
-                    dict_widget[study][out][dataset] = {}
+                    dict_widget[study][proc][dataset] = {}
                     for k, v in settings.items():
 
                         if isinstance(v, str):
@@ -642,10 +641,10 @@ def analysis(
                             )
                         
                         list_widgets.append(w)
-                        dict_widget[study][out][dataset][k] = w
+                        dict_widget[study][proc][dataset][k] = w
 
                     dict_settings_dataset[dataset] = mo.vstack(list_widgets)
-                dict_settings[out] = mo.accordion(dict_settings_dataset)
+                dict_settings[proc] = mo.accordion(dict_settings_dataset)
         
         dict_studies_settings[study] = mo.ui.tabs(dict_settings)
     widget = mo.ui.tabs(dict_studies_settings)

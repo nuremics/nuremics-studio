@@ -105,10 +105,18 @@ def _(working_dir_wgt):
 def _(is_valid_working_dir):
     mo.stop(not is_valid_working_dir)
 
-    mo.md(r"""
+    title11 = mo.md(r"""
     ### 📚 Studies
     -----------------------------
     """)
+
+    mo.vstack(
+        [
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([title11]),
+        ],
+    )
     return
 
 
@@ -220,10 +228,18 @@ def _(
 def _(is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
-    mo.md(r"""
+    title12 = mo.md(r"""
     ### ⚙️ Settings
     -----------------------------
     """)
+
+    mo.vstack(
+        [
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([title12]),
+        ],
+    )
     return
 
 
@@ -353,7 +369,7 @@ def _(get_state_datasets, get_state_settings, is_valid_list_studies):
 def _(is_valid_list_studies, kind):
     mo.stop(not is_valid_list_studies)
 
-    button = mo.ui.run_button(
+    run_button = mo.ui.run_button(
         kind=kind,
         label="Run App",
         full_width=False,
@@ -363,15 +379,15 @@ def _(is_valid_list_studies, kind):
             mo.vstack([mo.md("    ")]),
             mo.vstack([mo.md("    ")]),
             mo.vstack([mo.md("    ")]),
-            mo.vstack([button]),
+            mo.vstack([run_button]),
         ], align="center",
     )
-    return (button,)
+    return (run_button,)
 
 
 @app.cell(hide_code=True)
-def _(button):
-    mo.stop(not button.value)
+def _(run_button):
+    mo.stop(not run_button.value)
 
     success = None
 
@@ -431,7 +447,6 @@ def _(success):
 def _(list_studies, success, working_path):
     mo.stop(not success)
 
-
     get_state_analysis, set_state_analysis = mo.state(0)
 
     analysis_wgt, dict_analysis_wgt = wgt.analysis(
@@ -444,14 +459,14 @@ def _(list_studies, success, working_path):
 
 
 @app.cell(hide_code=True)
-def _(app, dict_analysis_wgt, get_state_analysis, success, working_path):
+def _(dict_analysis_wgt, get_state_analysis, success, working_path):
     mo.stop(not success)
 
     _ = get_state_analysis()
 
     upt.analysis(
-        app=app,
-        app_import=app_import,
+        # app=app,
+        # app_import=app_import,
         dict_analysis_wgt=dict_analysis_wgt,
         working_path=working_path,
     )
@@ -462,10 +477,18 @@ def _(app, dict_analysis_wgt, get_state_analysis, success, working_path):
 def _(success):
     mo.stop(not success)
 
-    mo.md(r"""
+    title21 = mo.md(r"""
     ### 👁️ Visualization
     -----------------------------
     """)
+    mo.vstack(
+        [
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([mo.md("    ")]),
+            mo.vstack([title21]),
+        ],
+    )
     return
 
 
