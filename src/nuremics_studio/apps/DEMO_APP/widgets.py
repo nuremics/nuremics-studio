@@ -1,15 +1,16 @@
-import os
 import json
-import marimo as mo
-import pandas as pd
+import os
 from pathlib import Path
+
+import marimo as mo
 
 
 def settings(
     working_path: Path,
     list_paths: list,
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[dict, dict]:
+    
     widget_paths = {}
     dict_widget_paths = {}
     for path in list_paths:
@@ -122,11 +123,12 @@ def settings(
     return widget_paths, dict_widget_paths
 
 
-def results():
+def results() -> dict:
 
     def _image_result(
         value: str,
-    ):
+    ) -> mo.Html:
+        
         image = mo.image(
             src=value,
             width=600,
@@ -135,7 +137,8 @@ def results():
     
     def _folder_result(
         value: str,
-    ):
+    ) -> mo.ui.tabs:
+        
         image = mo.image(
             src=os.path.join(value, "model_vs_theory.png"),
             width=600,

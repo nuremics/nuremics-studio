@@ -2,13 +2,15 @@ import copy
 from pathlib import Path
 
 from nuremics import Application
+
 import nuremics_studio.core.utils as utils
 
 
 def dict_studies(
     dict_studies: dict,
     dict_config_wgt: dict,
-):
+) -> dict:
+    
     dict_studies_configured = copy.deepcopy(dict_studies)
     for key, value in dict_studies["config"].items():
 
@@ -26,7 +28,8 @@ def datasets(
     app: Application,
     dict_datasets_wgt: dict,
     working_path: Path,
-):
+) -> None:
+    
     datasets = dict_datasets_wgt["datasets"]
     if datasets is not None:
         for col in datasets.value.columns:
@@ -55,7 +58,8 @@ def studies_settings(
     app: Application,
     dict_settings_wgt: dict,
     working_path: Path,
-):
+) -> None:
+    
     module_path = f"nuremics_studio.apps.{app.workflow.app_name}.update"
     module = utils.load_module(
         module_path=module_path,
@@ -180,7 +184,8 @@ def studies_settings(
 def analysis(
     dict_analysis_wgt: dict,
     working_path: Path,
-):
+) -> None:
+    
     for study, analysis in dict_analysis_wgt.items():
 
         # ----------------- #

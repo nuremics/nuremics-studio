@@ -1,8 +1,9 @@
-import marimo as mo
-import pandas as pd
 from pathlib import Path
 
+import marimo as mo
+import pandas as pd
 from nuremics import Application
+
 import nuremics_studio.core.utils as utils
 
 
@@ -11,7 +12,8 @@ def app_banner(
     app_logo: str,
     app_color: str,
     app_link: str,
-):
+) -> mo.Html:
+    
     if app_link is not None:
 
         widget = mo.Html(f"""
@@ -110,7 +112,8 @@ def app_banner(
 
 def app_visual(
     file: str,
-):
+) -> mo.Html:
+    
     if file is not None:
         image = mo.image(
             src=file,
@@ -129,7 +132,8 @@ def app_visual(
 
 def working_dir(
     working_dir: str,
-):
+) -> mo.ui.text:
+    
     widget = mo.ui.text(
         label="Working directory:",
         value=working_dir,
@@ -140,8 +144,9 @@ def working_dir(
 
 def splinecloud_config(
     app_config: str,
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[mo.Html, dict]:
+    
     dict_widget = {}
     if app_config is not None:
         config_button = mo.ui.run_button(
@@ -170,7 +175,8 @@ def splinecloud_config(
 
 def studies(
     list_studies: list[str],
-):
+) -> mo.ui.data_editor:
+    
     if list_studies:
         df = pd.DataFrame({"Studies": list_studies})
     else:
@@ -183,8 +189,9 @@ def studies(
 
 def config(
     dict_studies: dict,
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[mo.ui.tabs, dict]:
+    
     dict_widget = {}
     dict_tabs = {}
     for key, value in dict_studies["config"].items():
@@ -250,8 +257,9 @@ def datasets(
     app: Application,
     working_path: Path,
     list_studies: list[str],
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[mo.ui.data_editor | None, dict[str, mo.ui.data_editor | None]]:
+    
     df_datasets = pd.DataFrame()
     for study in list_studies:
         df_inputs = utils.get_inputs_csv(
@@ -281,8 +289,9 @@ def settings(
     default_params: dict,
     working_path: Path,
     list_studies: list[str],
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[mo.ui.tabs, dict]:
+    
     module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
     module = utils.load_module(
         module_path=module_path,
@@ -615,8 +624,9 @@ def settings(
 def analysis(
     working_path: Path,
     list_studies: list,
-    set_state,
-):
+    set_state: mo.state,
+) -> tuple[mo.ui.tabs, dict]:
+    
     dict_widget = {}
     dict_studies_settings = {}
     for study in list_studies:
@@ -686,7 +696,8 @@ def results(
     app: Application,
     working_path: Path,
     list_studies: list,
-):
+) -> (mo.ui.tabs | None):
+    
     module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
     module = utils.load_module(
         module_path=module_path,

@@ -1,4 +1,4 @@
-def get_app_features():
+def get_app_features() -> None:
     
     app_features = {}
 

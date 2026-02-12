@@ -5,7 +5,8 @@ from pathlib import Path
 def studies_settings(
     working_path: Path,
     dict_widget_paths: dict,
-):
+) -> list:
+    
     list_paths = []
     for path, widget in dict_widget_paths.items():
 
@@ -47,4 +48,3 @@ def studies_settings(
             list_paths.append(path)
     
     return list_paths
-    
