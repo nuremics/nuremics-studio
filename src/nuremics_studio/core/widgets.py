@@ -138,6 +138,36 @@ def working_dir(
     return widget
 
 
+def splinecloud_config(
+    app_config: str,
+    set_state,
+):
+    dict_widget = {}
+    if app_config is not None:
+        config_button = mo.ui.run_button(
+            kind="neutral",
+            label="Configure from SplineCloud",
+            full_width=False,
+            on_change=set_state,
+        )
+        image = mo.image(
+            src="https://splinecloud.com/img/sc-logo.png",
+            width=80,
+        )
+        widget = mo.vstack(
+            [image, config_button],
+            align="center", gap=0.75,
+        )
+        dict_widget["config_button"] = config_button
+    else:
+        widget = mo.vstack([
+            mo.md("    "),
+            mo.md("    ")
+        ])
+    
+    return widget, dict_widget
+
+
 def studies(
     list_studies: list[str],
 ):
@@ -231,7 +261,7 @@ def datasets(
         )
         if df_inputs is not None:
             df_datasets[study] = df_inputs["ID"].astype(str)
-    
+
     df_datasets = df_datasets.fillna("")
     if df_datasets.shape[1] != 0:
         widget = mo.ui.data_editor(
@@ -669,14 +699,11 @@ def results(
     else:
         func = None
     
-    dict_widget = {}
     if func is not None:
 
         dict_results_builder = func()
         dict_studies_results = {}
         for study in list_studies:
-
-            dict_widget[study] = {}
 
             dict_paths: dict = utils.get_json_file(
                 working_path=working_path,
@@ -703,4 +730,4 @@ def results(
     else:
         widget = None
     
-    return widget, dict_widget
+    return widget

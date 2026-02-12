@@ -1,18 +1,19 @@
 import marimo
 
-__generated_with = "0.19.8"
+__generated_with = "0.19.7"
 app = marimo.App(width="medium")
 
 with app.setup(hide_code=True):
-    import os
-    import sys
     import importlib
-    import marimo as mo
+    import os
+    import subprocess
     from pathlib import Path
 
+    import marimo as mo
+
+    import nuremics_studio.core.update as upt
     import nuremics_studio.core.utils as utils
     import nuremics_studio.core.widgets as wgt
-    import nuremics_studio.core.update as upt
 
     app_name = os.getenv("NUREMICS_APP")
 
@@ -22,6 +23,7 @@ with app.setup(hide_code=True):
     app_import = app_features["import"]
     app_link = app_features["link"]
     app_visual = app_features["visual"]
+    app_config = app_features["config"]
     app_logo = app_features["logo"]
     app_color = app_features["color"]
 
@@ -48,16 +50,6 @@ def _():
         file=app_visual,
     )
     app_visual_wgt
-    return
-
-
-@app.cell(disabled=True)
-def _():
-    image2 = mo.image(
-        src="https://splinecloud.com/img/sc-logo.png",
-        width=None,
-    )
-    mo.vstack([mo.vstack([image2], align="center")])
     return
 
 
@@ -105,24 +97,51 @@ def _(working_dir_wgt):
 def _(is_valid_working_dir):
     mo.stop(not is_valid_working_dir)
 
-    title11 = mo.md(r"""
-    ### 📚 Studies
-    -----------------------------
-    """)
+    get_state_sc, set_state_sc = mo.state(0)
 
-    mo.vstack(
-        [
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([title11]),
-        ],
+    sc_config_wgt, dict_sc_config_wgt = wgt.splinecloud_config(
+        app_config=app_config,
+        set_state=set_state_sc,
+    )
+    sc_config_wgt
+    return dict_sc_config_wgt, get_state_sc
+
+
+@app.cell(hide_code=True)
+def _(dict_sc_config_wgt, get_state_sc, is_valid_working_dir, working_dir_wgt):
+    mo.stop(not is_valid_working_dir)
+
+    _ = get_state_sc()
+
+    if app_config is not None:
+        if dict_sc_config_wgt["config_button"].value:
+            subprocess.run(
+                app_config,
+                cwd=working_dir_wgt.value,
+                shell=True,
+                check=True,
+            )
+    return
+
+
+@app.cell(hide_code=True)
+def _(is_valid_working_dir):
+    mo.stop(not is_valid_working_dir)
+
+    mo.md(
+        r"""
+        ### 📚 Studies
+        -----------------------------
+        """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(dict_settings, is_valid_working_dir, working_dir_wgt):
+def _(dict_settings, get_state_sc, is_valid_working_dir, working_dir_wgt):
     mo.stop(not is_valid_working_dir)
+
+    _ = get_state_sc()
 
     dict_settings["apps"][app_name]["working_dir"] = working_dir_wgt.value
 
@@ -228,17 +247,22 @@ def _(
 def _(is_valid_list_studies):
     mo.stop(not is_valid_list_studies)
 
-    title12 = mo.md(r"""
-    ### ⚙️ Settings
-    -----------------------------
-    """)
+    mo.vstack([
+        mo.md("    "),
+        mo.md("    "),
+    ])
+    return
 
-    mo.vstack(
-        [
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([title12]),
-        ],
+
+@app.cell(hide_code=True)
+def _(is_valid_list_studies):
+    mo.stop(not is_valid_list_studies)
+
+    mo.md(
+        r"""
+        ### ⚙️ Settings
+        -----------------------------
+        """
     )
     return
 
@@ -417,10 +441,12 @@ def _(message):
 def _(success):
     mo.stop(not success)
 
-    mo.md(r"""
-    ## 📊 Results
-    -----------------------------
-    """)
+    mo.md(
+        r"""
+        ## 📊 Results
+        -----------------------------
+        """
+    )
     return
 
 
@@ -436,10 +462,12 @@ def _(success, working_path):
 def _(success):
     mo.stop(not success)
 
-    mo.md(r"""
-    ### ⚙️ Settings
-    -----------------------------
-    """)
+    mo.md(
+        r"""
+        ### ⚙️ Settings
+        -----------------------------
+        """
+    )
     return
 
 
@@ -465,8 +493,6 @@ def _(dict_analysis_wgt, get_state_analysis, success, working_path):
     _ = get_state_analysis()
 
     upt.analysis(
-        # app=app,
-        # app_import=app_import,
         dict_analysis_wgt=dict_analysis_wgt,
         working_path=working_path,
     )
@@ -477,17 +503,23 @@ def _(dict_analysis_wgt, get_state_analysis, success, working_path):
 def _(success):
     mo.stop(not success)
 
-    title21 = mo.md(r"""
-    ### 👁️ Visualization
-    -----------------------------
-    """)
-    mo.vstack(
-        [
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([mo.md("    ")]),
-            mo.vstack([title21]),
-        ],
+    mo.vstack([
+        mo.md("    "),
+        mo.md("    "),
+        mo.md("    "),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(success):
+    mo.stop(not success)
+
+    mo.md(
+        r"""
+        ### 👁️ Visualization
+        -----------------------------
+        """
     )
     return
 
@@ -498,7 +530,7 @@ def _(app, get_state_analysis, list_studies, success, working_path):
 
     _ = get_state_analysis()
 
-    results_wgt, dict_results_wgt = wgt.results(
+    results_wgt = wgt.results(
         app=app,
         working_path=working_path,
         list_studies=list_studies,

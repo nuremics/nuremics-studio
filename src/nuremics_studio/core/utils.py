@@ -32,6 +32,7 @@ def get_app_features(
         "import": None,
         "link": None,
         "visual": None,
+        "config": None,
         "logo": None,
         "color": None,
     }
