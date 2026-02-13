@@ -12,11 +12,11 @@ license-files = [
   "LICENSE_TRADEMARK",
 ]
 dependencies = [
-  "nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@upgrades-for-gui"
+  "nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@main"
 ]
 
 [project.urls]
-homepage = "https://nuremics.github.io/"
+homepage = "https://nuremics.github.io"
 repository = "https://github.com/nuremics/nuremics-studio"
 
 [build-system]
