@@ -3,6 +3,7 @@ import importlib
 import importlib.util
 import json
 import os
+from importlib.resources import files
 from pathlib import Path
 from types import ModuleType
 from typing import Any, Callable, Optional, Union
@@ -30,26 +31,33 @@ def image_to_data_url(
 def get_app_features(
     app_name: str,
 ) -> dict[str, None]:
-    
-    module_path = f"nuremics_studio.apps.{app_name}.utils"
-    module = importlib.import_module(module_path)
-    func_features = getattr(module, "get_app_features")
+
+    features_file = files("nuremics_studio.resources").joinpath("features.json")
+    with open(features_file) as f:
+        dict_features = json.load(f)
 
     app_features = {
-        "import": None,
-        "link": None,
-        "visual": None,
-        "config": None,
         "logo": None,
         "color": None,
+        "import": None,
+        "visual": None,
+        "app_link": None,
+        "use_case_link": None,
+        "use_case_title": None,
+        "use_case_description": None,
+        "config": None,
     }
-    retrieved_app_features = func_features()
-    app_features.update(retrieved_app_features)
-    
+    app_features.update(dict_features["apps"][app_name])
+
     if app_features["logo"] is None:
-        app_features["logo"] = "https://raw.githubusercontent.com/nuremics/nuremics-docs/main/docs/images/logo.png"
+        app_features["logo"] = dict_features["common"]["logo"]
     if app_features["color"] is None:
-        app_features["color"] = "#0080ff6f"
+        app_features["color"] = dict_features["common"]["color"]
+    
+    if os.path.split(app_features["logo"])[0] == "":
+        app_features["logo"] = image_to_data_url(
+            files("nuremics_studio.resources").joinpath(app_features["logo"]),
+        )
 
     return app_features
 

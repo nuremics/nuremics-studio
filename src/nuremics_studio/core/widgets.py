@@ -45,7 +45,6 @@ def app_banner(
             }}
 
             .jost-banner:hover {{
-                transform: scale(1.005);
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
             }}
 
@@ -90,8 +89,6 @@ def app_banner(
                 border-radius: 10px;
 
                 box-shadow: 0 0 14px rgba(0, 0, 0, 0.25);
-
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
             }}
 
             .jost-banner img {{
@@ -110,17 +107,154 @@ def app_banner(
     return widget
 
 
-def app_visual(
-    file: str,
+def use_case(
+    color: str,
+    visual: str,
+    use_case_link: str,
+    use_case_title: str,
+    use_case_description: str,
 ) -> mo.Html:
     
-    if file is not None:
-        image = mo.image(
-            src=file,
-            width=None,
-        )
-        widget = mo.vstack([mo.vstack([image], align="center")])
+    all_elements = True
+    if (visual is None) or \
+       (use_case_title is None) or \
+       (use_case_description is None):
+        all_elements = False
+    
+    if all_elements:
+
+        if use_case_link is not None:
+
+            html = mo.Html(f"""
+                <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap" rel="stylesheet">
+
+                <style>
+                .image-card-link {{
+                    text-decoration: none;
+                    display: inline-block;
+                }}
+
+                .image-card {{
+                    font-family: 'Jost', sans-serif;
+                    background-color: white;
+                    border-radius: 12px;
+                    padding: 16px;
+                    box-shadow: 0 0 14px rgba(0, 0, 0, 0.2);
+
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }}
+
+                .image-card:hover {{
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+                }}
+
+                .image-card-title {{
+                    color: {color};
+                    font-size: 18px;
+                    font-weight: 700;
+                    text-align: center;
+                    margin-bottom: 0px;
+                }}
+                            
+                .image-card-description {{
+                    color: #00000092;        
+                    font-size: 14px; 
+                    font-weight: 400; 
+                    text-align: center;
+                    margin-bottom: 6px;
+                }}
+
+                .image-card img {{
+                    width: 100%;
+                    display: block;
+                    margin: 0 auto;
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                }}
+                
+                </style>
+
+                <a href="{use_case_link}" target="_blank" class="image-card-link">
+                    <div class="image-card">
+                        <div class="image-card-title">
+                            {use_case_title}
+                        </div>
+                        <div class="image-card-description">
+                            {use_case_description}
+                        </div>
+                        <img src="{visual}">
+                    </div>
+                </a>
+            """)
+    
+        else:
+
+            html = mo.Html(f"""
+                <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap" rel="stylesheet">
+
+                <style>
+                .image-card-link {{
+                    text-decoration: none;
+                    display: inline-block;
+                }}
+
+                .image-card {{
+                    font-family: 'Jost', sans-serif;
+                    background-color: white;
+                    border-radius: 12px;
+                    padding: 16px;
+                    box-shadow: 0 0 14px rgba(0, 0, 0, 0.2);
+                }}
+
+                .image-card-title {{
+                    color: {color};
+                    font-size: 18px;
+                    font-weight: 700;
+                    text-align: center;
+                    margin-bottom: 0px;
+                }}
+                            
+                .image-card-description {{
+                    color: #00000092;        
+                    font-size: 14px; 
+                    font-weight: 400; 
+                    text-align: center;
+                    margin-bottom: 6px;
+                }}
+
+                .image-card img {{
+                    width: 100%;
+                    display: block;
+                    margin: 0 auto;
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                }}
+                
+                </style>
+
+                <div class="image-card">
+                    <div class="image-card-title">
+                        {use_case_title}
+                    </div>
+                    <div class="image-card-description">
+                        {use_case_description}
+                    </div>
+                    <img src="{visual}">
+                </div>
+            """)
+
+        widget = mo.vstack([
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+            html,
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+            mo.vstack(["      "]),
+        ])
+
     else:
+
         widget = mo.vstack([
             mo.vstack(["      "]),
             mo.vstack(["      "]),

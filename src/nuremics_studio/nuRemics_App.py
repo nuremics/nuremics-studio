@@ -20,12 +20,15 @@ with app.setup(hide_code=True):
     app_features = utils.get_app_features(
         app_name=app_name,
     )
-    app_import = app_features["import"]
-    app_link = app_features["link"]
-    app_visual = app_features["visual"]
-    app_config = app_features["config"]
     app_logo = app_features["logo"]
     app_color = app_features["color"]
+    app_import = app_features["import"]
+    app_visual = app_features["visual"]
+    app_link = app_features["app_link"]
+    use_case_link = app_features["use_case_link"]
+    use_case_title = app_features["use_case_title"]
+    use_case_description = app_features["use_case_description"]
+    app_config = app_features["config"]
 
     module_path = f"nuremics_labs.apps.{app_import}"
     module = importlib.import_module(module_path)
@@ -46,10 +49,14 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    app_visual_wgt = wgt.app_visual(
-        file=app_visual,
+    use_case_wgt = wgt.use_case(
+        color=app_color,
+        visual=app_visual,
+        use_case_link=use_case_link,
+        use_case_title=use_case_title,
+        use_case_description=use_case_description,
     )
-    app_visual_wgt
+    use_case_wgt
     return
 
 
