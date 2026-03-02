@@ -11,9 +11,9 @@ with app.setup(hide_code=True):
 
     import marimo as mo
 
-    import nuremics_studio.core.update as upt
-    import nuremics_studio.core.utils as utils
-    import nuremics_studio.core.widgets as wgt
+    import nuremics_gui.core.update as upt
+    import nuremics_gui.core.utils as utils
+    import nuremics_gui.core.widgets as wgt
 
     app_name = os.getenv("NUREMICS_APP")
 

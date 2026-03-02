@@ -32,7 +32,7 @@ def get_app_features(
     app_name: str,
 ) -> dict[str, None]:
 
-    features_file = files("nuremics_studio.resources").joinpath("features.json")
+    features_file = files("nuremics_gui.resources").joinpath("features.json")
     with open(features_file) as f:
         dict_features = json.load(f)
 
@@ -56,7 +56,7 @@ def get_app_features(
     
     if os.path.split(app_features["logo"])[0] == "":
         app_features["logo"] = image_to_data_url(
-            files("nuremics_studio.resources").joinpath(app_features["logo"]),
+            files("nuremics_gui.resources").joinpath(app_features["logo"]),
         )
 
     return app_features

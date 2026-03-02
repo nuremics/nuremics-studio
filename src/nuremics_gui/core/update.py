@@ -3,7 +3,7 @@ from pathlib import Path
 
 from nuremics import Application
 
-import nuremics_studio.core.utils as utils
+import nuremics_gui.core.utils as utils
 
 
 def dict_studies(
@@ -60,7 +60,7 @@ def studies_settings(
     working_path: Path,
 ) -> None:
     
-    module_path = f"nuremics_studio.apps.{app.workflow.app_name}.update"
+    module_path = f"nuremics_gui.apps.{app.workflow.app_name}.update"
     module = utils.load_module(
         module_path=module_path,
     )
