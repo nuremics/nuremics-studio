@@ -1,5 +1,5 @@
 [project]
-name = "nuremics-gui" 
+name = "nuremics-studio" 
 version = "1.0.0"
 description = "Graphical front-end of the nuRemics framework."
 authors = [
@@ -12,12 +12,12 @@ license-files = [
   "LICENSE_TRADEMARK",
 ]
 dependencies = [
-  "nuremics @ git+https://github.com/nuremics/nuremics.git@main"
+  "nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@main"
 ]
 
 [project.urls]
 homepage = "https://nuremics.github.io"
-repository = "https://github.com/nuremics/nuremics-gui"
+repository = "https://github.com/nuremics/nuremics-studio"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
@@ -27,7 +27,7 @@ build-backend = "setuptools.build_meta"
 include-package-data = true
 
 [tool.setuptools.package-data]
-"nuremics_gui.resources" = [
+"nuremics_studio.resources" = [
   "*.json",
   "*.png",
 ]
