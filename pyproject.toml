@@ -28,8 +28,8 @@ include-package-data = true
 
 [tool.setuptools.package-data]
 "nuremics_studio.resources" = [
-  "*.json",
   "*.png",
+  "*.yml",
 ]
 
 [tool.setuptools.packages.find]

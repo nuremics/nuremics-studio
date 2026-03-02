@@ -11,9 +11,9 @@ with app.setup(hide_code=True):
 
     import marimo as mo
 
-    import nuremics_gui.core.update as upt
-    import nuremics_gui.core.utils as utils
-    import nuremics_gui.core.widgets as wgt
+    import nuremics_studio.core.update as upt
+    import nuremics_studio.core.utils as utils
+    import nuremics_studio.core.widgets as wgt
 
     app_name = os.getenv("NUREMICS_APP")
 
@@ -30,8 +30,7 @@ with app.setup(hide_code=True):
     use_case_description = app_features["use_case_description"]
     app_config = app_features["config"]
 
-    module_path = f"nuremics_labs.apps.{app_import}"
-    module = importlib.import_module(module_path)
+    module = importlib.import_module(app_import)
     main = getattr(module, "main")
 
 

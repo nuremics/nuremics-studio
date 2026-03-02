@@ -5645,7 +5645,7 @@ packages:
 - pypi: ./
   name: nuremics-studio
   version: 1.0.0
-  sha256: d6745bbd655b92c4166f62372df75c88f4c01c1f6b6a14f8f72c00912232745f
+  sha256: 6b63ca4c68179ec9c5bee03ee7864e6cbad6b10afcf4d03c95e94cdcb102cafb
   requires_dist:
   - nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@main
 - conda: https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.4-h55fea9a_0.conda

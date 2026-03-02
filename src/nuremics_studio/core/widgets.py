@@ -4,7 +4,7 @@ import marimo as mo
 import pandas as pd
 from nuremics import Application
 
-import nuremics_gui.core.utils as utils
+import nuremics_studio.core.utils as utils
 
 
 def app_banner(
@@ -424,7 +424,7 @@ def settings(
     set_state: mo.state,
 ) -> tuple[mo.ui.tabs, dict]:
     
-    module_path = f"nuremics_gui.apps.{app.workflow.app_name}.widgets"
+    module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
     module = utils.load_module(
         module_path=module_path,
     )
@@ -830,7 +830,7 @@ def results(
     list_studies: list,
 ) -> (mo.ui.tabs | None):
     
-    module_path = f"nuremics_gui.apps.{app.workflow.app_name}.widgets"
+    module_path = f"nuremics_studio.apps.{app.workflow.app_name}.widgets"
     module = utils.load_module(
         module_path=module_path,
     )

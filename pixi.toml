@@ -9,6 +9,7 @@ pandas = ">=2.1.1,<4"
 platformdirs = ">=3.5,<5"
 rclone = ">=1.72.1,<2"
 ruff = ">=0.12.7,<0.16"
+pyyaml = ">=6.0.3,<7"
 
 [pypi-dependencies]
 nuremics-studio  = { path = ".", editable = true }
@@ -26,8 +27,8 @@ xlsxwriter = ">=3.2.3,<4"
 openpyxl = ">=3.1.5,<4"
 
 [feature.DEMO_APP.tasks]
-DEMO_APP = "NUREMICS_APP=DEMO_APP marimo run src/nuremics_gui/nuRemics_App.py"
-DEMO_APP-edit = "NUREMICS_APP=DEMO_APP marimo edit src/nuremics_gui/nuRemics_App.py"
+DEMO_APP = "NUREMICS_APP=DEMO_APP marimo run src/nuremics_studio/nuRemics_App.py"
+DEMO_APP-edit = "NUREMICS_APP=DEMO_APP marimo edit src/nuremics_studio/nuRemics_App.py"
 
 [environments]
 demo = ["DEMO_APP"]
