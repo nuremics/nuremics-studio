@@ -151,15 +151,14 @@ def use_case(
                 .image-card-title {{
                     color: {color};
                     font-size: 18px;
-                    font-weight: 700;
+                    font-weight: bold;
                     text-align: center;
                     margin-bottom: 0px;
                 }}
                             
                 .image-card-description {{
-                    color: #00000092;        
+                    color: #7F7F7FFF;        
                     font-size: 14px; 
-                    font-weight: 400; 
                     text-align: center;
                     margin-bottom: 6px;
                 }}
@@ -209,7 +208,7 @@ def use_case(
                 .image-card-title {{
                     color: {color};
                     font-size: 18px;
-                    font-weight: 700;
+                    font-weight: bold;
                     text-align: center;
                     margin-bottom: 0px;
                 }}
@@ -217,7 +216,6 @@ def use_case(
                 .image-card-description {{
                     color: #00000092;        
                     font-size: 14px; 
-                    font-weight: 400; 
                     text-align: center;
                     margin-bottom: 6px;
                 }}

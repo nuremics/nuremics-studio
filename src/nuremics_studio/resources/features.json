@@ -10,7 +10,7 @@
             "app_link": "https://nuremics.github.io/labs/apps/general/DEMO_APP",
             "use_case_link": "https://nuremics.github.io/use-cases/general/demo",
             "use_case_title": "Projectile motion under gravity",
-            "use_case_description": "Solid mechanics simulation of projectile kinematics, launched with an initial velocity and subjected to gravitational acceleration.",
+            "use_case_description": "Solid mechanics simulation of projectile kinematics launched with an initial velocity and subjected to gravitational acceleration.",
             "config": "rclone copy :http: ./DEMO_APP --http-url https://splinecloud.com/api/repositories/rpo_F5RXF9z7AcHH/mirror/"
         }
     }
