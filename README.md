@@ -1,5 +1,6 @@
 <img src="https://raw.githubusercontent.com/nuremics/nuremics.github.io/main/images/banner.jpg" width="100%">
-# nuRemics
+<h1 style="margin-top:0.2em;">nuRemics</h1>
+
 _An open-source Python framework for building software-grade scientific tools._
 
 <p align="left">
