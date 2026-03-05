@@ -1,7 +1,7 @@
 <img src="https://raw.githubusercontent.com/nuremics/nuremics.github.io/main/images/banner.jpg" width="100%">
 
 # nuRemics
-**An open-source Python framework for building software-grade scientific tools.**
+_An open-source Python framework for building software-grade scientific tools._
 
 <p align="left">
   <img src="https://img.shields.io/badge/Python-3.9+-ffcd3b?style=flat&logo=python&logoColor=white" />
