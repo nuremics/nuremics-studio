@@ -37,7 +37,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libopenblas-0.3.32-pthreads_h94d23a6_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libsqlite-3.52.0-hf4e2dac_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-15.2.0-h934c35e_18.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.41.4-h5347b49_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.42-h5347b49_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/loro-1.10.3-py314h5059d10_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/marimo-0.19.7-py314h9e666f3_0.conda
@@ -73,7 +73,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -139,7 +139,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -206,7 +206,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -277,7 +277,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -390,7 +390,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libunwind-1.8.3-h65a8314_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/liburing-2.14-hb700be7_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libusb-1.0.29-h73b1eb8_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.41.4-h5347b49_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.42-h5347b49_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libvorbis-1.3.7-h54a6638_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libvulkan-loader-1.4.341.0-h5279c79_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libwebp-base-1.6.0-hd42ef1d_0.conda
@@ -435,7 +435,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pymdown-extensions-10.21.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pymunk-7.1.0-py313h07c4f96_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.3.2-pyhcf101f3_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/pyside6-6.11.0-py313hcd51b16_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/pyside6-6.11.0-py313hcd51b16_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.13.12-hc97d973_100_cp313.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.13-8_cp313.conda
@@ -491,7 +491,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-ng-2.3.3-hceb46e0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -637,7 +637,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-ng-2.3.3-h8bce59a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -783,7 +783,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-ng-2.3.3-hed4e4f5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -897,7 +897,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pymdown-extensions-10.21.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pymunk-7.1.0-py313h5ea7bf4_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.3.2-pyhcf101f3_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/pyside6-6.11.0-py313h0c3c3c1_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/pyside6-6.11.0-py313h0c3c3c1_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/python-3.13.12-h09917c8_100_cp313.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0.post0-pyhe01879c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-tzdata-2025.3-pyhd8ed1ab_0.conda
@@ -937,7 +937,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zlib-ng-2.3.3-h0261ad2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
       - pypi: git+https://github.com/nuremics/nuremics.git#2fc0b7d45194690f8f8f6f0fc17aec931881e4ab
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
@@ -4252,16 +4252,16 @@ packages:
   purls: []
   size: 118204
   timestamp: 1748856290542
-- conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.41.4-h5347b49_0.conda
-  sha256: eeadbc59678103a9405bae26f5251d744a114fcab79e79d9b68fec36c4cdb43b
-  md5: 2b4d2e6978dd06af374b50abca6d374b
+- conda: https://conda.anaconda.org/conda-forge/linux-64/libuuid-2.42-h5347b49_0.conda
+  sha256: bc1b08c92626c91500fd9f26f2c797f3eb153b627d53e9c13cd167f1e12b2829
+  md5: 38ffe67b78c9d4de527be8315e5ada2c
   depends:
-  - libgcc >=14
   - __glibc >=2.17,<3.0.a0
+  - libgcc >=14
   license: BSD-3-Clause
   purls: []
-  size: 40283
-  timestamp: 1775040819467
+  size: 40297
+  timestamp: 1775052476770
 - conda: https://conda.anaconda.org/conda-forge/linux-64/libvorbis-1.3.7-h54a6638_2.conda
   sha256: ca494c99c7e5ecc1b4cd2f72b5584cef3d4ce631d23511184411abcbb90a21a5
   md5: b4ecbefe517ed0157c37f8182768271c
@@ -5669,7 +5669,7 @@ packages:
   - termcolor>=1.1.0
   - platformdirs>=3.5
   requires_python: '>=3.9'
-- pypi: git+https://github.com/nuremics/nuremics-labs.git#cd30cc9a2eda6557f9c856fcc20b7d07a9d493ff
+- pypi: git+https://github.com/nuremics/nuremics-labs.git#d5b6edc648ae7b7a143cb3db72ce17b657ca6929
   name: nuremics-labs
   version: 1.0.0
   requires_dist:
@@ -5677,9 +5677,9 @@ packages:
 - pypi: ./
   name: nuremics-studio
   version: 1.0.0
-  sha256: 5a6ee7bdba3fa9b5e81269ecee81510cd5c8bc77d522b4cf162d90503aa80cfa
+  sha256: 78cbbba1965daef3438bad20fc8042b7ceb36e924a93f165abe60d86fee5b64d
   requires_dist:
-  - nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@upgrades-for-gui
+  - nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@pygame-fix
 - conda: https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.4-h55fea9a_0.conda
   sha256: 3900f9f2dbbf4129cf3ad6acf4e4b6f7101390b53843591c53b00f034343bc4d
   md5: 11b3379b191f63139e29c0d19dee24cd
@@ -7033,54 +7033,51 @@ packages:
   - pkg:pypi/pyparsing?source=hash-mapping
   size: 110893
   timestamp: 1769003998136
-- conda: https://conda.anaconda.org/conda-forge/linux-64/pyside6-6.11.0-py313hcd51b16_0.conda
-  sha256: 85ccc55ed3630e6add7f1aff04c53ff2c0b60be93ce57f735ea7b2514261e42a
-  md5: 81412e7d848362a09a30ede0776e657b
+- conda: https://conda.anaconda.org/conda-forge/linux-64/pyside6-6.11.0-py313hcd51b16_1.conda
+  sha256: d1fee2b83e5ae3a9543054cde1e28b6520e23ceedac49e6e7b86535ce23d3345
+  md5: aafbb057823020eda1e5db662bc354a9
   depends:
   - python
   - qt6-main 6.11.0.*
-  - __glibc >=2.17,<3.0.a0
-  - libstdcxx >=14
   - libgcc >=14
-  - libgl >=1.7.0,<2.0a0
+  - libstdcxx >=14
+  - __glibc >=2.17,<3.0.a0
+  - qt6-main >=6.11.0,<6.12.0a0
+  - python_abi 3.13.* *_cp313
+  - libegl >=1.7.0,<2.0a0
   - libxslt >=1.1.43,<2.0a0
+  - libgl >=1.7.0,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
   - libxml2
   - libxml2-16 >=2.14.6
-  - libopengl >=1.7.0,<2.0a0
-  - libegl >=1.7.0,<2.0a0
-  - libclang13 >=21.1.8
   - libvulkan-loader >=1.4.341.0,<2.0a0
-  - python_abi 3.13.* *_cp313
-  - qt6-main >=6.11.0,<6.12.0a0
+  - libclang13 >=21.1.8
   license: LGPL-3.0-only
-  license_family: LGPL
   purls:
-  - pkg:pypi/pyside6?source=hash-mapping
-  - pkg:pypi/shiboken6?source=hash-mapping
-  size: 13208346
-  timestamp: 1774714567688
-- conda: https://conda.anaconda.org/conda-forge/win-64/pyside6-6.11.0-py313h0c3c3c1_0.conda
-  sha256: 56c518c3647ad9b607047afceb7235b5f4406b6f43535031b49cf27f4b7230c2
-  md5: fe889613a213866408caf04e81aff146
+  - pkg:pypi/pyside6?source=compressed-mapping
+  size: 13208635
+  timestamp: 1775055046353
+- conda: https://conda.anaconda.org/conda-forge/win-64/pyside6-6.11.0-py313h0c3c3c1_1.conda
+  sha256: 5789524928f986686eb4a1035ef86efbdf44f62c6cfe8ca061cdf7f834fddea1
+  md5: 725a47b06acf24c3be030c8385468ff9
   depends:
   - python
   - qt6-main 6.11.0.*
   - vc >=14.3,<15
   - vc14_runtime >=14.44.35208
   - ucrt >=10.0.20348.0
-  - libxslt >=1.1.43,<2.0a0
+  - qt6-main >=6.11.0,<6.12.0a0
+  - python_abi 3.13.* *_cp313
   - libxml2
   - libxml2-16 >=2.14.6
-  - python_abi 3.13.* *_cp313
-  - libclang13 >=21.1.8
-  - qt6-main >=6.11.0,<6.12.0a0
   - libvulkan-loader >=1.4.341.0,<2.0a0
+  - libxslt >=1.1.43,<2.0a0
+  - libclang13 >=21.1.8
   license: LGPL-3.0-only
   purls:
-  - pkg:pypi/pyside6?source=hash-mapping
-  - pkg:pypi/shiboken6?source=hash-mapping
-  size: 11066409
-  timestamp: 1774714624600
+  - pkg:pypi/pyside6?source=compressed-mapping
+  size: 11066495
+  timestamp: 1775055194500
 - conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.13.12-hc97d973_100_cp313.conda
   build_number: 100
   sha256: 8a08fe5b7cb5a28aa44e2994d18dbf77f443956990753a4ca8173153ffb6eb56
