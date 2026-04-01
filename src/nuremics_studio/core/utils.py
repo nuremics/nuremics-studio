@@ -1,8 +1,11 @@
 import base64
+import http.server
 import importlib
-import importlib.util
 import json
 import os
+import socketserver
+import threading
+from functools import partial
 from importlib.resources import files
 from pathlib import Path
 from types import ModuleType
@@ -18,6 +21,8 @@ CONFIG_PATH = user_config_path(
     appauthor=False,
 )
 SETTINGS_FILE: Path = CONFIG_PATH / "settings.json"
+
+_httpd_server = None
 
 
 def image_to_data_url(
@@ -40,6 +45,7 @@ def get_app_features(
     app_features = {
         "logo": None,
         "color": None,
+        "dependencies": None,
         "import": None,
         "visual": None,
         "app_link": None,
@@ -54,6 +60,10 @@ def get_app_features(
         app_features["logo"] = dict_features["common"]["logo"]
     if app_features["color"] is None:
         app_features["color"] = dict_features["common"]["color"]
+
+    common_deps = dict_features["common"]["dependencies"]
+    app_deps = app_features["dependencies"]
+    app_features["dependencies"] = common_deps + app_deps
     
     if os.path.split(app_features["logo"])[0] == "":
         app_features["logo"] = image_to_data_url(
@@ -63,14 +73,37 @@ def get_app_features(
     return app_features
 
 
+def load_local_server(
+    working_path: Path,
+) -> None:
+    
+    global _httpd_server
+    
+    PORT = 8000
+
+    if _httpd_server is not None:
+        _httpd_server.shutdown()
+        _httpd_server.server_close()
+        _httpd_server = None
+
+    handler = partial(http.server.SimpleHTTPRequestHandler, directory=str(working_path))
+
+    socketserver.TCPServer.allow_reuse_address = True
+    httpd = socketserver.TCPServer(("", PORT), handler)
+
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+
+    _httpd_server = httpd
+
+
 def load_module(
     module_path: str
 ) -> ModuleType:
-    
-    spec = importlib.util.find_spec(module_path)
-    if spec is not None:
+
+    try:
         module = importlib.import_module(module_path)
-    else:
+    except ModuleNotFoundError:
         module = None
 
     return module
