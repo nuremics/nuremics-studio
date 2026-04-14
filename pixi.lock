@@ -73,8 +73,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.1-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       osx-64:
@@ -140,8 +140,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.1-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       osx-arm64:
@@ -206,8 +206,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.1-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       win-64:
@@ -277,8 +277,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.1-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
   demo:
@@ -492,8 +492,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-ng-2.3.3-hceb46e0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       osx-64:
@@ -638,8 +638,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-ng-2.3.3-h8bce59a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       osx-arm64:
@@ -784,8 +784,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-ng-2.3.3-hed4e4f5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
       win-64:
@@ -938,8 +938,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zlib-ng-2.3.3-h0261ad2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - pypi: https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl
-      - pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
-      - pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+      - pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
+      - pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
       - pypi: https://files.pythonhosted.org/packages/33/d1/8bb87d21e9aeb323cc03034f5eaf2c8f69841e40e4853c2627edf8111ed3/termcolor-3.3.0-py3-none-any.whl
       - pypi: ./
 packages:
@@ -5675,7 +5675,7 @@ packages:
   - pkg:pypi/numpy?source=hash-mapping
   size: 7311362
   timestamp: 1773839141373
-- pypi: git+https://github.com/nuremics/nuremics.git#e37e99473d686a2d3093427237a899e0117ca0a8
+- pypi: git+https://github.com/nuremics/nuremics.git#53c10c191916cb1de28c9aace7dd6bceb1f269de
   name: nuremics
   version: 1.0.0
   requires_dist:
@@ -5686,17 +5686,17 @@ packages:
   - platformdirs>=3.5
   - pyyaml>=5.4.1
   requires_python: '>=3.9'
-- pypi: git+https://github.com/nuremics/nuremics-labs.git#09dd6cc16c69f03bf75a86cde68707929ff10ec4
+- pypi: git+https://github.com/nuremics/nuremics-labs.git#66f36e51d159ad6a52ac2059abbbb4bd1c62516d
   name: nuremics-labs
   version: 1.0.0
   requires_dist:
-  - nuremics @ git+https://github.com/nuremics/nuremics.git@app-yaml
+  - nuremics @ git+https://github.com/nuremics/nuremics.git@main
 - pypi: ./
   name: nuremics-studio
   version: 1.0.0
-  sha256: 08b702b3ac2d2d47b7e681c93e84844bf9308490ddc7eba83e4242c525c2de78
+  sha256: 6b63ca4c68179ec9c5bee03ee7864e6cbad6b10afcf4d03c95e94cdcb102cafb
   requires_dist:
-  - nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@app-yaml
+  - nuremics-labs @ git+https://github.com/nuremics/nuremics-labs.git@main
 - conda: https://conda.anaconda.org/conda-forge/linux-64/openjpeg-2.5.4-h55fea9a_0.conda
   sha256: 3900f9f2dbbf4129cf3ad6acf4e4b6f7101390b53843591c53b00f034343bc4d
   md5: 11b3379b191f63139e29c0d19dee24cd
